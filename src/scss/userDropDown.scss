@@ -1,0 +1,13 @@
+.user-menu{
+	color: $black;
+	cursor: pointer;
+	padding: 6px 12px;	
+	&:hover,
+	&:active {
+		background: $gray-100;
+		color: $orange-500;
+	}	
+	&:focus {
+		color: $orange-500;
+	}
+}

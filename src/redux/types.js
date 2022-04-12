@@ -1,0 +1,8 @@
+export const INIT_USER = 'INIT_USER';
+export const GET_PERSONAL_USER = 'GET_PERSONAL_USER';
+export const SET_PERSONAL_USER = 'SET_PERSONAL_USER';
+export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
+export const SHOW_ERROR = 'APP/SHOW_ERROR'
+export const HIDE_ERROR = 'APP/HIDE_ERROR'
+export const SHOW_LOADER = 'APP/SHOW_LOADER'
+export const HIDE_LOADER = 'APP/HIDE_LOADER'
