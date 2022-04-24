@@ -46,9 +46,13 @@
 
 .products{
 	&__show-all{
-		color: $orange-500;
+		color: $black;
 		text-decoration: none;
+		transition: all 0.3s ease;
 		&:hover{
+			color: $orange-500;
+		}
+		&_subtext{
 			color: $orange-500;
 		}
 	}

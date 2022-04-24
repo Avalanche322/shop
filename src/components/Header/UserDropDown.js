@@ -21,22 +21,21 @@ function UserDropDown({handlerLogout}) {
 		</div>
 	));
 	return (
-		<Dropdown>
+		<Dropdown align={{ md: 'start' }}>
 			<Dropdown.Toggle as={CustomToggle}>Custom toggle</Dropdown.Toggle>
-			<Dropdown.Menu>
-				<Dropdown.Item as="button" eventKey="1">
-					<Link className="link" to='/settings/profile'><BiUserPin/> Персональна сторінка</Link>
-				</Dropdown.Item>
-				<Dropdown.Item as="button" eventKey="2">
-					<Link className="link" to='/settings/purchases'><RiBillLine/> Мої замовлення</Link>
-				</Dropdown.Item>
-				<Dropdown.Item 
-					as="button" 
-					className="link" 
-					eventKey="1" 
+			<Dropdown.Menu className='user-menu__menu'>
+				<Dropdown.ItemText eventKey="1" className="p-0">
+					<Link className="user-menu__link w-100 w-100 d-inline-block" to='/settings/profile'><BiUserPin/> Персональна сторінка</Link>
+				</Dropdown.ItemText>
+				<Dropdown.ItemText eventKey="2" className="p-0">
+					<Link className="user-menu__link w-100 d-inline-block" to='/settings/purchases'><RiBillLine/> Мої замовлення</Link>
+				</Dropdown.ItemText>
+				<Dropdown.ItemText 
+					className="user-menu__link" 
+					eventKey="3" 
 					onClick={handlerLogout}
 					><IoMdExit/> Вихід
-				</Dropdown.Item>
+				</Dropdown.ItemText>
 			</Dropdown.Menu>
 		</Dropdown>
 	);

@@ -24,12 +24,14 @@
 		cursor: pointer;
 		color: $black;
 		padding: 6px 12px;
+		text-decoration: none;
 		svg {
 			transition: all 0.15s ease;
 		}
 		
 		&:hover{
 			background: $gray-100;
+			color: $black;
 			svg{
 				color: $orange-500;
 			}
@@ -95,6 +97,12 @@
 	&__description{
 		font-size: 14px;
 	}
+	&__address{
+		white-space: nowrap;
+		width: 150px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 }
 .menu-header{
 	&__link{
@@ -121,13 +129,15 @@
 		//left: 40%;
 	}
 	&__btn_search, &__input{
-		background: transparent;
-		border: none;
+		@extend %reset-btn;
+	}
+	&__btn_search{
+		cursor: pointer;
 	}
 	&__input{
+		cursor: auto !important;
 		&:focus, &:focus-within{
-			border: none;
-			background: transparent;
+			@extend %reset-btn;
 			box-shadow: none;
 		}
 	}
@@ -151,6 +161,7 @@
 	&__link{
 		color: $black;
 		transition: all 0.3s ease;
+		text-decoration: none;
 		&:hover{
 			color: $orange-500;
 		}

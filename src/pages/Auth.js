@@ -1,9 +1,8 @@
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, FloatingLabel } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { requestOTP, verifyOTP } from "../redux/actions";
-import CustomInput from "../components/CustomInput";
 
 function Auth() {
 	const navigate = useNavigate()
@@ -33,20 +32,22 @@ function Auth() {
 			<Form onSubmit={handelSubmit}>
 				<Modal.Body>
 					{!otpForm ? 
-					<div className="mb-3">
-						<CustomInput 
-							value={phoneNumber} 
-							text={`Номер телефону`} 
-							handlerChange={(e) => setPhoneNumber(e.target.value)}
-							name={'tel'} />
-					</div>
-				:	<div className="mb-3">
-							<CustomInput 
-								value={otp} 
-								text={`OTP`} 
-								handlerChange={(e) => setOtp(e.target.value)}
-								name={'otp'} />
-						</div>
+					<FloatingLabel className='mb-3' controlId="tel" label="Номер телефону">
+						<Form.Control
+							placeholder="Номер телефону"
+							value={phoneNumber}
+							onChange={(e) => setPhoneNumber(e.target.value)}
+							required
+							type="password" />
+					</FloatingLabel>
+					: <FloatingLabel className='mb-3' controlId="otp" label="OTP">
+							<Form.Control
+								placeholder="OTP"
+								value={otp}
+								onChange={(e) => setOtp(e.target.value)}
+								required
+								type="password" />
+						</FloatingLabel>
 					}
 					
 				</Modal.Body>

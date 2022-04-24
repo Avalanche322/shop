@@ -1,13 +1,15 @@
 import { Container } from "react-bootstrap";
 import { Outlet } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
+import SidebarSettings from "../components/Settings/SidebarSettings";
 
 const Settings = () => {
 	return (
-		<div className="settigns d-flex flex-column flex-md-row">
-			<Sidebar/>
+		<div className="settigns">
 			<Container fluid='md'>
-				<Outlet/>
+				<div className="d-flex flex-md-row flex-column">
+					<SidebarSettings/>
+					<Outlet/>
+				</div>
 			</Container>
 		</div>
 	);

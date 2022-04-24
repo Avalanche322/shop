@@ -6,15 +6,17 @@ import { HiSearch } from 'react-icons/hi'
 import { BiExit, BiUserPin } from 'react-icons/bi'
 import { RiBillLine } from 'react-icons/ri'
 import { Fragment } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import AllStafs from "./AllStafs";
 import UserDropDown from "./UserDropDown";
-import { logout } from "../redux/actions";
+import { logout } from "../../redux/actions";
+import HeaderCart from "./HeaderCart";
 
 
 function Header() {
 	const user = useSelector(state => state.user.user);
+	const address = useSelector(state => state.user.personl.address);
 	const location = useLocation();
 	const dispatch = useDispatch();
 	const navigator = useNavigate();
@@ -22,6 +24,7 @@ function Header() {
 		dispatch(logout())
 		navigator('/')
 	}
+
 	return (
 		<header className="header">
 			<Navbar expand='md' fixed="top" className="py-3">
@@ -52,14 +55,14 @@ function Header() {
 							{/*if user sing in, we show the links*/}
 							<Nav className="flex-grow-1 pe-3 px-3">
 								{user && <Fragment>
-									<Nav.Link className="sidebar__link" to='/settings/profile'>
+									<Link className="sidebar__link mb-2" to='/settings/profile'>
 										<BiUserPin className="me-2"/>
 										Персональні сторінка
-										</Nav.Link>
-									<Nav.Link to='/settings/purchases' className="sidebar__link">
+										</Link>
+									<Link to='/settings/purchases' className="sidebar__link mb-2">
 										<RiBillLine className="me-2"/>
 										Мої замовлення
-										</Nav.Link>
+										</Link>
 									<div 
 										className="sidebar__link"
 										onClick={handlerLogout}>
@@ -110,27 +113,47 @@ function Header() {
 						</NavLink>
 							: <UserDropDown handlerLogout={handlerLogout} />
 						}
-						{/*Adress*/}
-						<div className="fs-4 px-3 header__btn_light align-items-center rounded-pill d-none d-sm-flex">
+						{/*Address*/}
+						<NavLink to={`${location.pathname === '/' ? location.pathname : location.pathname + '/'}address`}
+							state={{ backgroundLocation: location }} 
+							className="fs-4 px-3 header__btn_light align-items-center rounded-pill d-none d-sm-flex">
 							<HiOutlineLocationMarker/>
 							<div className="d-flex flex-column ms-2 header__description">
-								<span className="lh-1 fw-bold">Доставка:</span>
-								<span className="lh-2">Додати адресу</span>
+								{!address.active_address.town ?
+								<>
+									<span className="lh-1 fw-bold">Самовивіз:</span>
+									<span className="lh-2">Додати адресу</span>
+								</>
+								: <>
+									<span className="lh-1 fw-bold">{address.type === 'shop' ? 'Самовивіз' : 'Доставка'}</span>
+									<span className="lh-2 header__address">{address.active_address?.town} {address.active_address?.street} {address.active_address?.house} {address.active_address?.flat}
+									</span>
+								  </>
+								}
 							</div>
-						</div>
+						</NavLink>
 						{/*Cart*/}
-						<div className="btn_orange py-2 px-3 d-flex align-items-center rounded-pill">
-							<BsCart4 className="fs-5"/>
-						</div>
+						<HeaderCart/>
 					</div>
-					{/*Adress for mobile*/}
-					<div className="fs-1 align-items-center d-sm-none d-flex mt-4 w-100">
+					{/*Address for mobile*/}
+					<NavLink to={`${location.pathname === '/' ? location.pathname : location.pathname + '/'}address`}
+							state={{ backgroundLocation: location }}  
+							className="fs-1 header__btn_light align-items-center d-sm-none d-flex mt-4 w-100">
 						<HiOutlineLocationMarker/>
 						<div className="d-flex flex-column ms-2 header__description">
-							<span className="lh-1 fw-bold">Доставка:</span>
-							<span className="lh-2">Додати адресу</span>
+							{!address.active_address ?
+							<>
+								<span className="lh-1 fw-bold">Самовивіз:</span>
+								<span className="lh-2">Додати адресу</span>
+							</>
+							: <>
+								<span className="lh-1 fw-bold">{address.type === 'shop' ? 'Самовивіз' : 'Доставка'}</span>
+								<span className="lh-2">{address.active_address?.town} {address.active_address?.street} {address.active_address?.house} {address.active_address?.flat}
+								</span>
+								</>
+							}
 						</div>
-					</div>
+					</NavLink>
 				</Container>
 			</Navbar>
 		</header>

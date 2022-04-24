@@ -1,6 +1,7 @@
 import Slider from "react-slick";
 import {MdKeyboardArrowLeft, MdKeyboardArrowRight} from 'react-icons/md'
-import ProductItem from "./ProductItem";
+import ProductItem from "../ProductItem";
+import { Link } from "react-router-dom";
 
 
 function ProductsList({product}) {
@@ -69,13 +70,20 @@ function ProductsList({product}) {
 	return (
 		<div className="products">
 			<div className="mb-4 d-flex align-items-center gap-3">
-				<h2>{product.title}</h2>
-				<a href="#" className="products__show-all">Показати всі</a>
+				<Link className="products__show-all d-flex align-items-center gap-3" to='#'>
+					<h2>{product.title}</h2>
+					<span className="products__show-all_subtext">Показати всі</span>
+				</Link>
 			</div>
 			<Slider {...settings}>
 				{product.contents.map(x => {
 					return <ProductItem content={x} key={x.name} />
 				})}
+				<div className="products__item 
+				item-products p-3 rounded-3 shadow-sm d-flex flex-column 
+				justify-content-center align-items-center">
+					<Link to='#' className="btn_orange rounded-pill py-2 px-3">Показати всі</Link>
+				</div>
         </Slider>
 		</div>
 	);

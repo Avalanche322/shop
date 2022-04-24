@@ -1,0 +1,7 @@
+.loader{
+	background: $gray-100;
+	z-index: 9999;
+	.spinner-grow{
+		background-color: $orange-500;
+	}
+}

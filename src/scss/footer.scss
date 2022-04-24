@@ -1,6 +1,8 @@
 .footer{
 	background-color: $orange-500;
 	margin-top: 200px;
+	position: relative;
+	z-index: 20;
 	&__list{
 		list-style: none;
 	}
