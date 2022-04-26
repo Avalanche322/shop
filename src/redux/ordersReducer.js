@@ -1,37 +1,12 @@
 import { ADD_TO_ORDER, FETCH_ORDER, REMOVE_ORDER, REMOVE_FROM_ORDER, SET_ORDER, MAKE_ORDER } from "./types";
-
-/*
-	{
-		idUser
-		idOrder
-		address: {}
-		date: {
-			timeDelivery
-			dayDelivery
-			dateOrder
-		}
-		price
-		message
-		weight
-		contacts
-		typePayment: {
-			type
-			card ?
-		}
-		products: [
-			{
-				idProduct
-				count
-			}
-		]
-	}
-*/
-
 const initialState = {
-	orders : [],
+	orders : {
+		content: [],
+		lengthOrders: 0,
+	},
 	currentOrder: JSON.parse(localStorage.getItem('currentOrder')) ?? 
 	{ 
-		userUid: JSON.parse(localStorage.getItem('user')).uid,
+		userUid: JSON.parse(localStorage.getItem('user'))?.uid,
 		products: [],
 		price: 0.00,
 		message: '',
@@ -54,7 +29,7 @@ function getPriceWeight(content){
 
 const ordersReducer = (state = initialState, action) => {
 	let currentOrder = { 
-		userUid: JSON.parse(localStorage.getItem('user')).uid,
+		userUid: JSON.parse(localStorage.getItem('user'))?.uid,
 		products: [],
 		price: 0.00,
 		message: '',
@@ -64,7 +39,7 @@ const ordersReducer = (state = initialState, action) => {
 	let updatedCurrentOrder = {};
 	switch (action.type) {
 		case FETCH_ORDER:
-			return {...state, orders: action.payload}
+			return {...state, orders: {content: action.payload.content, lengthOrders: action.payload.lengthOrders}}
 		case SET_ORDER:
 			currentOrder = {...state.currentOrder, ...action.payload}
 			localStorage.setItem('currentOrder', JSON.stringify(currentOrder))

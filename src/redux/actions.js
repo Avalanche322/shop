@@ -11,7 +11,10 @@ import {
 	where, 
 	collectionGroup, 
 	arrayUnion, 
-	arrayRemove 
+	arrayRemove,
+	startAt,
+	orderBy,
+	startAfter,
 } from "firebase/firestore";
 import { 
 	RecaptchaVerifier, 
@@ -42,7 +45,11 @@ import {
 	UPDATE_ADDRESS_FIELD_USER,
 	UPDATE_PAYMENTS_FIELD_USER,
 	FETCH_ADDRESS,
-	FETCH_TIME
+	FETCH_TIME,
+	MAKE_MARK,
+	UPDATE_MARK,
+	FETCH_PRODUCTS_PAGINATION,
+	FETCH_PRODUCTS_FILTERED,
 } from "./types";
 
 /*App function*/
@@ -73,16 +80,16 @@ export function fetchProducts() {
 			let productsListRef = {};
 			for (const item of allDocs.docs) {
 				productsListRef = collection(db, "products", item.id, 'contentsProducts') 
-				productsList = (await getDocs(query(productsListRef, limit(7))))
+				productsList = (await getDocs(query(productsListRef, orderBy("name"), limit(7))))
 				result.push({
 					title: item.data().title,
 					id: item.id,
+					link: item.data().link,
+					category: item.data().category,
+					lengthProducts: item.data().lengthProducts,
 					contents: productsList.docs.map(doc => ({id: doc.id, ...doc.data()}))
 				})
 			}
-			//const test = query(collectionGroup(db, "contentsProducts"), 
-			//where('id', 'in', ['p1FdzMkr6eQ1xdIjnkpy', 'L7ijI4vfwPazbrQa2PS5']))
-			//console.log((await getDocs(test)));
 			dispatch({type: FETCH_PRODUCTS, payload: result})
 			dispatch({type: HIDE_BG_LOADER});
 			dispatch({type: HIDE_LOADER});
@@ -91,6 +98,170 @@ export function fetchProducts() {
 			dispatch(showMessage(e.message, 'ERROR') );
 			document.body.classList.remove('overflow-hidden');
 			dispatch({type: HIDE_BG_LOADER});
+			dispatch({type: HIDE_LOADER});
+		}
+	}
+}
+export function makeMark(mark, markData, products, product){
+	return async dispatch => {
+		try{
+			dispatch({type: HIDE_MESSAGE});
+			dispatch({type: SHOW_LOADER});
+
+			dispatch({type: MAKE_MARK, payload: {mark, markData, products, product}});
+			const docRef = query(collectionGroup(db, "contentsProducts"), 
+			where('id', '==', product.id))
+			const refProduct = (await getDocs(docRef)).docs[0].ref.path
+			await updateDoc(doc(db, refProduct), {
+				mark,
+				marks: arrayUnion(markData)
+			})
+			dispatch({type: HIDE_LOADER});
+		} catch(e){
+			dispatch(showMessage(e.message, 'ERROR') );
+			dispatch({type: HIDE_LOADER});
+		}
+	}
+}
+export function updateMark(mark, marks, products, product){
+	return async dispatch => {
+		try{
+			dispatch({type: HIDE_MESSAGE});
+			dispatch({type: SHOW_LOADER});
+
+			const docRef = query(collectionGroup(db, "contentsProducts"), 
+			where('id', '==', product.id))
+			dispatch({type: UPDATE_MARK, payload: {mark, marks, products, product}});
+			const refProduct = (await getDocs(docRef)).docs[0].ref.path
+			await updateDoc(doc(db, refProduct), {
+				mark,
+				marks
+			})
+			dispatch({type: HIDE_LOADER});
+		} catch(e){
+			dispatch(showMessage(e.message, 'ERROR') );
+			dispatch({type: HIDE_LOADER});
+		}
+	}
+}
+export function fetchProductsPagination(limitNum = 7, id) {
+	return async dispatch => {
+		try{
+			dispatch({type: HIDE_MESSAGE});
+			dispatch({type: SHOW_LOADER});
+			let productsList = {};
+			let productsListRef = {};
+			productsListRef = collection(db, "products", id, 'contentsProducts')
+
+			const firsProducts  = (await getDocs(query(productsListRef, orderBy("name"), limit(limitNum))))
+			const lastDoc = firsProducts.docs[firsProducts.docs.length-1]
+
+			productsList = (await getDocs(query(productsListRef, orderBy("name"), startAfter(lastDoc), limit(7))))
+			const result = productsList.docs.map(doc => ({id: doc.id, ...doc.data()}))
+			dispatch({type: FETCH_PRODUCTS_PAGINATION, payload: {contents: result, id}})
+			dispatch({type: HIDE_LOADER});
+		} catch(e){
+			dispatch(showMessage(e.message, 'ERROR') );
+			dispatch({type: HIDE_LOADER});
+		}
+	}
+}
+export function fetchProductsFiltered(categories = [], price = 100, limitNum = 7, id) {
+	return async dispatch => {
+		try{
+			dispatch({type: HIDE_MESSAGE});
+			dispatch({type: SHOW_LOADER});
+			let productsList = {};
+			let productsListRef = {};
+			productsListRef = collection(db, "products", id, 'contentsProducts')
+			let firsProducts = {}
+			let lengthFiltered = 0
+			let lastDoc = {}
+			let result = []
+			if(categories.length) {
+				firsProducts  = (await getDocs(query(productsListRef, 
+					orderBy("price"), 
+					where('typeCategory', 'in', categories),
+					where('price', '<=', +price),
+					limit(limitNum))
+				))
+				lengthFiltered = (await getDocs(query(productsListRef, 
+					orderBy("price"), 
+					where('typeCategory', 'in', categories),
+					where('price', '<=', +price)
+				))).docs.length
+				lastDoc = firsProducts.docs[firsProducts.docs.length-1] ?? ''
+				productsList = (await getDocs(query(productsListRef, 
+					orderBy("price"), 
+					where('typeCategory', 'in', categories),
+					where('price', '<=', +price),
+					startAfter(lastDoc),
+					limit(2))
+				))
+				result = [
+					...productsList.docs.map(doc => ({id: doc.id, ...doc.data()})), 
+					...firsProducts.docs.map(doc => ({id: doc.id, ...doc.data()}))]
+			}
+			dispatch({type: FETCH_PRODUCTS_FILTERED, payload: {content: result, lengthFiltered}})
+			dispatch({type: HIDE_LOADER});
+		} catch(e){
+			dispatch(showMessage(e.message, 'ERROR') );
+			dispatch({type: HIDE_LOADER});
+		}
+	}
+}
+export function fetchProductsFilteredPrice(categories = [], price = 100, limitNum = 7, id) {
+	return async dispatch => {
+		try{
+			dispatch({type: HIDE_MESSAGE});
+			dispatch({type: SHOW_LOADER});
+			let productsList = {};
+			let productsListRef = {};
+			productsListRef = collection(db, "products", id, 'contentsProducts')
+			let lengthFiltered = 0
+			let result = []
+			console.log(categories);
+			if(categories.length) {
+				lengthFiltered = (await getDocs(query(productsListRef, 
+					orderBy("price"), 
+					where('typeCategory', 'in', categories),
+					where('price', '<=', +price)
+				))).docs.length
+				productsList = (await getDocs(query(productsListRef, 
+					orderBy("price"),
+					where('price', '<=', +price),
+					where('typeCategory', 'in', categories),
+					limit(limitNum))
+				))
+			} else {
+				lengthFiltered = (await getDocs(query(productsListRef, 
+					orderBy("price"),
+					where('price', '<=', +price)
+				))).docs.length
+				productsList = (await getDocs(query(productsListRef, 
+					orderBy("price"),
+					where('price', '<=', +price),
+					limit(limitNum))
+				))
+			}
+			result = productsList.docs.map(doc => ({id: doc.id, ...doc.data()}))
+			dispatch({type: FETCH_PRODUCTS_FILTERED, payload: {content: result, lengthFiltered}})
+			dispatch({type: HIDE_LOADER});
+		} catch(e){
+			dispatch(showMessage(e.message, 'ERROR') );
+			dispatch({type: HIDE_LOADER});
+		}
+	}
+}
+export function clearFilterProducts() {
+	return async dispatch => {
+		try{
+			dispatch({type: HIDE_MESSAGE});
+			dispatch({type: SHOW_LOADER});
+			dispatch({type: FETCH_PRODUCTS_FILTERED, payload: {content: [], lengthFiltered: 0}})
+			dispatch({type: HIDE_LOADER});
+		} catch(e){
+			dispatch(showMessage(e.message, 'ERROR') );
 			dispatch({type: HIDE_LOADER});
 		}
 	}
@@ -171,8 +342,15 @@ export function verifyOTP(otp) {
 				surname: '',
 				dateBirth: ''
 			}
-			const address = []
-			const payments = []
+			const address = {
+				active_address: {},
+				delivery: [],
+				shop: [],
+			}
+			const payments = {
+				cards: [],
+				active_card: {}
+			}
 			try{
 				dispatch({type: HIDE_MESSAGE});
 				dispatch({type: SHOW_LOADER});
@@ -425,20 +603,31 @@ export function unsubscribe() {
 export function addProducts(){
 	return async dispatch => {
 		try{
+			const typeCategory = 'test'
+
 			const docRef = doc(db, "products", 'b9Ti2jcwMjlSHaTNET43');
-			const colRef = collection(docRef, "contentsProducts")
-			const newDoc = await addDoc(colRef, {	
+			const colRef = collection(docRef, "contentsProducts")	
+			const newProduct = await addDoc(colRef, {	
 				countMarks: '',
 				imgUrl: 'gs://shop-a76f5.appspot.com/grocery/888567_480x480wwm_5081246e-180a-6314-e5a6-093098a18c9c.png',
 				mark: '',
-				name: 'Вироби макаронні Terra di Grano «Пенне Рігате»',
+				name: 'test',
 				price: 39.99,
 				type: 'г',
 				weight: 500,
+				typeCategory,
 				id: ''
 			})
-			await updateDoc(doc(db, newDoc.path), {
-				id: newDoc.id
+			const product = (await getDoc(docRef)).data();
+			await updateDoc(doc(db, newProduct.path), {
+				id: newProduct.id
+			})
+			const categoryCount = product.category.filter(x=> x.name === typeCategory)[0]?.count ?? 0;
+			await updateDoc(docRef, {
+				category: [
+					...product.category.filter(x=> x.name !== typeCategory), 
+					{name: typeCategory, count: categoryCount + 1
+				}]
 			})
 		} catch(e){
 			dispatch(showMessage(e.message, 'ERROR') );
@@ -447,17 +636,26 @@ export function addProducts(){
 }
 
 /*orders*/
-export function fetchOrders(){
+export function fetchOrders(limitNum = 1, id){
 	return async dispatch => {
 		try{
 			document.body.classList.add('overflow-hidden');
 			dispatch({type: HIDE_MESSAGE});
 			dispatch({type: SHOW_BG_LOADER});
-			const allOrderDocs = await getDocs(collection(db, "orders"));
+			console.log('f');
+			const lengthOrders = await getDocs(query(collection(db, "orders"),
+				orderBy('price'),
+				where('userUid', '==', id)
+			))
+			const ordersList = await getDocs(query(collection(db, "orders"),
+				orderBy('price'),
+				where('userUid', '==', id), 
+				limit(limitNum)
+			));
 			let allIdProducts = []
 			let result = []
 			let order = {}
-			for (const orderDoc of allOrderDocs.docs) {
+			for (const orderDoc of ordersList.docs) {
 				order = await getDoc(doc(db, "orders", orderDoc.id));
 				allIdProducts.push(...order.data().products.map(x => x.id))
 				result.push(order.data())
@@ -472,7 +670,7 @@ export function fetchOrders(){
 					return {...orderItemProduct, ...product}
 				})
 			}
-			dispatch({type: FETCH_ORDER, payload: result});
+			dispatch({type: FETCH_ORDER, payload: {content: result, lengthOrders: lengthOrders.docs.length}});
 			dispatch({type: HIDE_BG_LOADER});
 			dispatch({type: HIDE_LOADER});
 			document.body.classList.remove('overflow-hidden');

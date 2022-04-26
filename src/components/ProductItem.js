@@ -9,7 +9,7 @@ import placeholder  from '../img/placeholder.png';
 import { addToOrder, removeFromOrder } from '../redux/actions';
 import AddToCart from './AddToCart';
 
-function ProductItem({content}) {
+function ProductItem({content, products}) {
 	const [imgUrl, setImgUrl] = useState('')
 	const dispatch = useDispatch();
 	const order = useSelector(state => state.orders.currentOrder)
@@ -20,8 +20,6 @@ function ProductItem({content}) {
 			setImgUrl(fileUrl)
 		}
 		getImg()
-	}, [])
-	useEffect(() => {
 		setProductInOrder(order.products.find(x => x.id === content.id)?.count ?? 0)
 	}, [])
 	function handlerAddToOrder(){
@@ -38,10 +36,13 @@ function ProductItem({content}) {
 	}
 	return (
 		<div 
-			className="products__item 
+			className="products__item
 			item-products p-3 rounded-3 shadow-sm d-flex flex-column 
 			justify-content-between item-products__scale">
-			<Link to="#" className='item-products__link'>
+			<Link 
+				to={`/product/${content.id}`} 
+				className='item-products__link'
+				state={{ product: content, products }}>
 				<div className="item-products__img mx-auto">
 					<img src={imgUrl ? imgUrl : placeholder} alt={content.name} />
 				</div>
@@ -49,21 +50,28 @@ function ProductItem({content}) {
 					<h3 className='fs-6 mt-2'>{content.name}</h3>
 					<div className='d-flex align-items-center'>
 						<div>
-							<AiFillStar className='item-products__star'/>
-							<AiFillStar className='item-products__star'/>
-							<AiFillStar className='item-products__star'/>
-							<AiFillStar className='item-products__star'/>
-							<AiFillStar className='item-products__star'/>
+							<AiFillStar className={`${content.mark >= 1 ? 'item-products__star_active' : 'item-products__star'}`}/>
+							<AiFillStar className={`${content.mark >= 2 ? 'item-products__star_active' : 'item-products__star'}`}/>
+							<AiFillStar className={`${content.mark >= 3 ? 'item-products__star_active' : 'item-products__star'}`}/>
+							<AiFillStar className={`${content.mark >= 4 ? 'item-products__star_active' : 'item-products__star'}`}/>
+							<AiFillStar className={`${content.mark >= 5 ? 'item-products__star_active' : 'item-products__star'}`} />
 						</div>
 						<span className='me-3 ms-1 fw-bold'>{content.mark}</span>
-						<span className='item-products__mark'>{content.countMarks} оцінки</span>
+						<span className='product__mark'>{content.marks.length} оцінки</span>
 					</div>
 					<hr className='item-products__line line' />
-					<span className='item-products__weigth'>{content.weight} {content.type}</span>
+					<span className='product__weigth'>{content.weight} {content.type}</span>
 				</div>
 			</Link>
 			<div className='d-flex justify-content-between align-items-center mt-5'>
-				<div className='fs-3 fw-bold item-products__price'>{content.price} <span className='fs-5 fw-normal'>грн</span></div>
+				{!content.oldPrice && 
+				<div className='fs-3 fw-bold product__price'>{content.price} <span className='fs-5 fw-normal'>грн</span></div>}
+				{!!content.oldPrice && 
+				<div className='d-flex flex-column'>
+					<div className='fs-5 text-decoration-line-through lh-1 product__price_through'>{content.oldPrice}</div>
+					<div className='fs-3 fw-bold product__price'>{content.price} <span className='fs-5 fw-normal'>грн</span></div>
+				</div>
+				}
 				{!productInOrder ? <button 
 					onClick={() => handlerAddToOrder()} 
 						className='item-products__cart shadow rounded-circle p-2'

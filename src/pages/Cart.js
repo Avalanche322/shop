@@ -29,7 +29,7 @@ const Cart = () => {
 							Очистити кошик
 						</Button>}
 					</div>
-					{!(order.price - 49 > 300) &&  <Alert variant="secondary">
+					{!(order.price - 49 >= 300) &&  <Alert variant="secondary">
 						<Alert.Heading>
 							Мінімальна сума для замовлення 300.00 грн. 
 							{!!(order.price - 49) && `Додайте товарів на суму ${(300 - (order.price - 49)).toFixed(2)} грн.`}
@@ -83,7 +83,7 @@ const Cart = () => {
 					<div className="text-center">
 						<Link 
 							to='/checkout' 
-							className={`btn_orange py-2 px-5 rounded-pill mt-2 d-inline-block ${!(order.price - 49 > 300) ? 'btn-disabled_orange' : ''}`}
+							className={`btn_orange py-2 px-5 rounded-pill mt-2 d-inline-block ${!(order.price - 49 >= 300) ? 'btn-disabled_orange' : ''}`}
 							>
 							Далі
 						</Link>

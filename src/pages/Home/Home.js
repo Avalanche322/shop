@@ -1,12 +1,14 @@
 import { Container } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import videoWebm from '../video/prevue.webm';
-import ProductsList from '../components/Home/ProductsList';
-import HomeBanner from '../components/Home/HomeBanner';
+import videoWebm from '../../video/prevue.webm';
+import ProductsList from '../../components/Home/ProductsList';
+import HomeBanner from '../../components/Home/HomeBanner';
+import { addProducts } from '../../redux/actions';
 
 function Home() {
 	const products = useSelector(state => state.products.products)
+	const dispatch = useDispatch()
 
 	return ( 
 		<div className="home">

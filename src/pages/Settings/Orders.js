@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Container, Accordion, Button, Spinner } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Container, Accordion, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { fetchOrders, setOrder } from "../../redux/actions";
@@ -11,23 +11,28 @@ const Orders = () => {
 	const navigate = useNavigate()
 	const orders = useSelector(state => state.orders.orders);
 	const loading = useSelector(state => state.app.loading);
+	const userId = useSelector(state => state.user.user.uid);
+	const [countOrders, setCountOrders] = useState(7);
 	
 	useEffect(() => {
-		dispatch(fetchOrders());
+		dispatch(fetchOrders(countOrders, userId));
 	}, [])
+	function handlerPagination() {
+		setCountOrders(countOrders + 7);
+		dispatch(fetchOrders(countOrders + 7, userId));
+	}
 	
 	function handlerRepeatOrder(order) {
 		dispatch(setOrder({price: order.price, weight: order.weight, products: order.products, message: order.message}))
 		navigate('/cart')
 	}
-
 	return (
 		<section className="w-100">
 			<Container fluid='md'>
 				{!loading && <div className="bg-white rounder-3 p-3">
 					<h4>Мої замовлення</h4>
 					<Accordion>
-						{orders.map((order, i) => {
+						{orders.content.map((order, i) => {
 							return (
 								<Accordion.Item key={order.orderId} eventKey={i}>
 									<Accordion.Header>
@@ -68,6 +73,7 @@ const Orders = () => {
 							)
 						})}
 					</Accordion>
+					{orders.lengthOrders !== orders.content.length && <button onClick={handlerPagination}>Показати ще</button>}
 				</div>}
 			</Container>
 		</section>

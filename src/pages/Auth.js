@@ -38,7 +38,7 @@ function Auth() {
 							value={phoneNumber}
 							onChange={(e) => setPhoneNumber(e.target.value)}
 							required
-							type="password" />
+							type="text" />
 					</FloatingLabel>
 					: <FloatingLabel className='mb-3' controlId="otp" label="OTP">
 							<Form.Control
@@ -46,7 +46,7 @@ function Auth() {
 								value={otp}
 								onChange={(e) => setOtp(e.target.value)}
 								required
-								type="password" />
+								type="text" />
 						</FloatingLabel>
 					}
 					

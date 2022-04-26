@@ -10,16 +10,20 @@ import AllStafsBottom from "./components/AllStafsBottom";
 import Footer from "./components/Footer";
 import Header from "./components/Header/Header";
 
-import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Cart from "./pages/Cart";
 import Settings from "./pages/Settings";
 import Checkout from "./pages/Checkout";
 import Address from "./pages/Address";
 
+import AllProducts from "./pages/Home/AllProducts";
+import Home from "./pages/Home/Home";
+
 import Profile from "./pages/Settings/Profile";
 import PaymentSettings from "./pages/Settings/PaymentSettings";
 import Orders from "./pages/Settings/Orders";
+import Product from "./pages/Product";
+
 
 
 
@@ -29,13 +33,16 @@ function App() {
 	const message = useSelector(state => state.app.message);
 	const bg_loading = useSelector(state => state.app.bg_loading);
 	const user = useSelector(state => state.user.user);
+	const order = useSelector(state => state.orders.currentOrder)
 	let state = location.state;
 	let backgroundLocation = state?.backgroundLocation
 	useEffect(() => {
 		dispatch(unsubscribe());
-		dispatch(getUserData(user));
-		dispatch(fetchAddress())
-		dispatch(fetchTime())
+		if(user) {
+			dispatch(getUserData(user));
+			dispatch(fetchAddress())
+			dispatch(fetchTime())
+		}
 		dispatch(fetchProducts())
 	}, [])
 	/*get personal data*/
@@ -53,7 +60,7 @@ function App() {
 				{backgroundLocation && (
 				<Routes path={backgroundLocation.pathname}>
 					<Route path='auth' element={<Auth />} />
-					<Route path='address' element={<Address />} />
+					<Route path='address' element={user ? <Address /> : <Navigate to="/" />} />
 				</Routes>
 				)}
 				<Routes location={backgroundLocation || location}>
@@ -63,8 +70,10 @@ function App() {
 						<Route path="payment" element={<PaymentSettings />} />
 						<Route path="purchases" element={<Orders />} />
 					</Route>
+					<Route path="/product/:id" element={user ? <Product /> : <Navigate to="/" />} />
 					<Route path="/cart" element={user ? <Cart /> : <Navigate to="/" />} />
-					<Route path="/checkout" element={user ? <Checkout /> : <Navigate to="/" />} />
+					<Route path="/checkout" element={(user && order.products.length) ? <Checkout /> : <Navigate to="/" />} />
+					<Route path="/category/:category" element={<AllProducts />} />
 				</Routes>
 			</main>
 			<AllStafsBottom/>

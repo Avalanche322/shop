@@ -70,19 +70,25 @@ function ProductsList({product}) {
 	return (
 		<div className="products">
 			<div className="mb-4 d-flex align-items-center gap-3">
-				<Link className="products__show-all d-flex align-items-center gap-3" to='#'>
+				<Link 
+					className="products__show-all d-flex align-items-center gap-3" 
+					to={`/category/${product.link}`}
+					state={{ id: product.id }}>
 					<h2>{product.title}</h2>
 					<span className="products__show-all_subtext">Показати всі</span>
 				</Link>
 			</div>
 			<Slider {...settings}>
-				{product.contents.map(x => {
-					return <ProductItem content={x} key={x.name} />
+				{product.contents.slice(0, 7).map(x => {
+					return <ProductItem products={product} content={x} key={x.name} />
 				})}
 				<div className="products__item 
 				item-products p-3 rounded-3 shadow-sm d-flex flex-column 
 				justify-content-center align-items-center">
-					<Link to='#' className="btn_orange rounded-pill py-2 px-3">Показати всі</Link>
+					<Link 
+						to={`/category/${product.link}`}
+						state={{ id: product.id }}
+						className="btn_orange rounded-pill py-2 px-3">Показати всі</Link>
 				</div>
         </Slider>
 		</div>
