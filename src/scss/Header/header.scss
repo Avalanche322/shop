@@ -124,26 +124,40 @@
 	}
 	&:focus-within{
 		background-color: $white;
-		//max-width: 500px;
-		//position: absolute;
-		//left: 40%;
+		box-shadow: 0 0 0 0.25rem rgba($orange-500, 0.25);
+		
 	}
 	&__btn_search, &__input{
 		@extend %reset-btn;
 	}
 	&__btn_search{
 		cursor: pointer;
+		transition: all 0.3s ease;
 	}
 	&__input{
 		cursor: auto !important;
 		&:focus, &:focus-within{
 			@extend %reset-btn;
-			box-shadow: none;
+			box-shadow: none !important;
 		}
 	}
 	@media (min-width: 1200px) {
 		width: 400px;
 		background-color: $gray-100;
+	}
+	&__hide_all{
+		opacity: 0.65;
+		overflow: hidden;
+		z-index: 100;
+		pointer-events: none;
+	}
+	&__remove{
+		@extend %reset-btn;
+		color: $black;
+		&:hover{
+			background: none;
+			color: $orange-500;
+		}
 	}
 }
 .sidebar{

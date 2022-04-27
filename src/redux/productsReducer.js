@@ -1,11 +1,15 @@
-import { FETCH_PRODUCTS, MAKE_MARK, UPDATE_MARK, FETCH_PRODUCTS_PAGINATION, FETCH_PRODUCTS_FILTERED } from "./types";
+import { FETCH_PRODUCTS, MAKE_MARK, UPDATE_MARK, FETCH_PRODUCTS_PAGINATION, FETCH_PRODUCTS_FILTERED, SEARCH_PRODUCTS } from "./types";
 
 const initialState = {
 	products : [],
 	filtered: {
 		content: [],
 		lengthFiltered: 0,
+		category: [],
+		maxPrice: 0,
+		minPrice: 0,
 	},
+	search: [],
 };
 
 
@@ -50,7 +54,9 @@ const productsReducer = (state = initialState, action) => {
 			}
 			return {...state, products}
 		case FETCH_PRODUCTS_FILTERED:
-			return {...state, filtered: {content: action.payload.content, lengthFiltered: action.payload.lengthFiltered} }
+			return {...state, filtered: {...state.filtered,...action.payload} }
+		case SEARCH_PRODUCTS:
+			return {...state, search: action.payload}
 		default:
 			return state
 	}

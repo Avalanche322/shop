@@ -1,8 +1,7 @@
-import { Navbar, Container, Nav, Offcanvas, InputGroup, FormControl } from "react-bootstrap";
+import { Navbar, Container, Nav, Offcanvas } from "react-bootstrap";
 import { FaRegUser, FaFacebookSquare, FaViber } from 'react-icons/fa'
-import { BsCart4, BsTelephone, BsTelegram, BsInstagram } from 'react-icons/bs'
+import { BsTelephone, BsTelegram, BsInstagram } from 'react-icons/bs'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
-import { HiSearch } from 'react-icons/hi'
 import { BiExit, BiUserPin } from 'react-icons/bi'
 import { RiBillLine } from 'react-icons/ri'
 import { Fragment } from "react";
@@ -12,6 +11,7 @@ import AllStafs from "./AllStafs";
 import UserDropDown from "./UserDropDown";
 import { logout } from "../../redux/actions";
 import HeaderCart from "./HeaderCart";
+import Search from "./Search";
 
 
 function Header() {
@@ -98,12 +98,7 @@ function Header() {
 							<AllStafs  />
 						</div>
 						{/*Search*/}
-						<InputGroup className="header__search search-header rounded-3 p-2">
-							<button className="search-header__btn_search fs-5">
-								<HiSearch/>
-							</button>
-							<FormControl className="search-header__input d-none d-xxl-block" placeholder="Пошук по сайту"/>
-						</InputGroup>
+						<Search/>
 						{/*User*/}
 						{!user ? <NavLink 
 							className="fs-5 user-menu rounded-circle" 

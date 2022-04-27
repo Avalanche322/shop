@@ -26,7 +26,7 @@ const Address = () => {
 	const [updateAddressItem , setUpdateAddressItem] = useState({});
 	const [addressState, setAddressState] = useState({shops: []}) // for fethed address shops
 
-	const handleClose = () => navigate('/');
+	const handleClose = () => navigate(-1);
 
 	function handelSubmit(e) {
 		e.preventDefault()

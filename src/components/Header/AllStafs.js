@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
 import { useSelector } from 'react-redux';
 
-function AllStafs() {
+function AllStafs({diraction = 'down'}) {
 	const products = useSelector(state => state.products.products)
 	const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
 		<div 
@@ -19,8 +19,9 @@ function AllStafs() {
 			{children}
 		</div>
 	));
+
 	return (
-		<Dropdown align={{ md: 'start' }}>
+		<Dropdown drop={diraction}>
 			<Dropdown.Toggle as={CustomToggle}>
 				<span className="mx-2">Всі товари</span>
 				<IoIosArrowDown/>
@@ -28,7 +29,7 @@ function AllStafs() {
 			<Dropdown.Menu>
 				{products.map(product => {
 					return (
-						<Dropdown.ItemText key={product.id} eventKey={product.id}>
+						<Dropdown.ItemText key={product.id}>
 							<Link 
 							to={`/category/${product.link}`}
 							state={{ id: product.id }}

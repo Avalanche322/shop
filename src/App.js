@@ -46,7 +46,7 @@ function App() {
 		dispatch(fetchProducts())
 	}, [])
 	/*get personal data*/
-
+	
   	return (
 		<div className="wrapper min-vh-100 w-100 d-flex flex-column">
 			{bg_loading && 
@@ -58,9 +58,12 @@ function App() {
 			<Header/>
 			<main className="main">
 				{backgroundLocation && (
-				<Routes path={backgroundLocation.pathname}>
-					<Route path='auth' element={<Auth />} />
-					<Route path='address' element={user ? <Address /> : <Navigate to="/" />} />
+				<Routes>
+					{location.pathname.includes('auth') && <Route path={location.pathname} element={<Auth />} />}
+					{location.pathname.includes('address') &&
+						<Route path={location.pathname} element={user ? <Address /> : <Navigate to="/" />} />
+					}
+					
 				</Routes>
 				)}
 				<Routes location={backgroundLocation || location}>

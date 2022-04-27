@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container, Accordion, Button } from "react-bootstrap";
+import { Container, Accordion, Button, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { fetchOrders, setOrder } from "../../redux/actions";
@@ -29,6 +29,12 @@ const Orders = () => {
 	return (
 		<section className="w-100">
 			<Container fluid='md'>
+				{/*Loader*/}
+				{loading && <div className="small-loader d-flex justify-content-center mt-5">
+					<Spinner animation="border" />
+				</div>}
+				{/*Not found*/}
+				{/*Orders*/}
 				{!loading && <div className="bg-white rounder-3 p-3">
 					<h4>Мої замовлення</h4>
 					<Accordion>
@@ -73,7 +79,20 @@ const Orders = () => {
 							)
 						})}
 					</Accordion>
-					{orders.lengthOrders !== orders.content.length && <button onClick={handlerPagination}>Показати ще</button>}
+					{!loading && !orders.content.length && 
+						<div className="text-center mt-4">
+							<span className="fw-bold fs-2">Немає замовлень</span>
+						</div>
+					}
+					{orders.lengthOrders !== orders.content.length && 
+						<div className="d-flex justify-content-center mt-4">
+							<Button 
+								type='button'
+								onClick={handlerPagination}
+								className="btn_orange rounded-pill py-2 px-4"
+							>Показати ще</Button>
+						</div>
+					}
 				</div>}
 			</Container>
 		</section>
