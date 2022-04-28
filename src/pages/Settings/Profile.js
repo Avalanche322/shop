@@ -30,6 +30,9 @@ const Profile = () => {
 		e.preventDefault();
 		dispatch(updateUserData(user, {contacts: contactsData}))
 	}
+	useEffect(() => {
+		setEmail(user.email)
+	}, [])
 	return (		
 		<section>
 			<div className="bg-white p-4">
@@ -127,7 +130,7 @@ const Profile = () => {
 						<FloatingLabel className="mt-4" controlId="email" label="Електронна адреса">
 							<Form.Control
 								placeholder="Електронна адреса"
-								value={user.email ?? ''}
+								value={email ?? ''}
 								disabled={loading}
 								onChange={((e) => setEmail(e.target.value))}
 								type="email" />

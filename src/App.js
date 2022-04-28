@@ -24,6 +24,7 @@ import PaymentSettings from "./pages/Settings/PaymentSettings";
 import Orders from "./pages/Settings/Orders";
 import Product from "./pages/Product";
 import ScrollToTop from "./components/App/ScrollToTop";
+import NotFound from "./pages/NotFound";
 
 
 
@@ -65,7 +66,6 @@ function App() {
 					{location.pathname.includes('address') &&
 						<Route path={location.pathname} element={user ? <Address /> : <Navigate to="/" />} />
 					}
-					
 				</Routes>
 				)}
 				<Routes location={backgroundLocation || location}>
@@ -79,6 +79,7 @@ function App() {
 					<Route path="/cart" element={user ? <Cart /> : <Navigate to="/" />} />
 					<Route path="/checkout" element={(user && order.products.length) ? <Checkout /> : <Navigate to="/" />} />
 					<Route path="/category/:category" element={<AllProducts />} />
+					<Route path="*" element={<NotFound />} />
 				</Routes>
 			</main>
 			<AllStafsBottom/>
