@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Container, Button, Form, Spinner, Offcanvas } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { GoSettings } from "react-icons/go";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProductItem from "../../components/ProductItem";
 import { fetchProductsFiltered, fetchProductsPagination, fetchProductsFilteredPrice, clearFilterProducts } from "../../redux/actions";
 
@@ -106,7 +106,7 @@ const AllProducts = () => {
 						type='button' 
 						onClick={() => setShowFiltres(true)} 
 						className="btn_orange rounded-pill d-flex gap-2 align-items-center">
-						<GoSettings className="fs-5"/>
+						<FontAwesomeIcon icon="fa-solid fa-sliders" className="fs-5" />
 						<span>Фільтри</span>
 					</Button>
 				</div>

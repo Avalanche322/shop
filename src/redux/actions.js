@@ -103,6 +103,7 @@ export function fetchProducts() {
 					title: item.data().title,
 					id: item.id,
 					link: item.data().link,
+					icon: item.data().icon,
 					category: _getCategories(allProductsList),
 					maxPrice: _getMaxPrice(allProductsList),
 					minPrice: _getMinPrice(allProductsList),
@@ -308,14 +309,16 @@ export function searchProducts(name) {
 		try{
 			dispatch({type: HIDE_MESSAGE});
 			dispatch({type: SHOW_LOADER});
-			const docsRef = query(collectionGroup(db, "contentsProducts"),
-				orderBy('name'),
-				startAt(name),
-				endAt(name + '\uf8ff'),
-				limit(7)
-			);
-			const result = (await getDocs(docsRef)).docs.map(doc => ({id: doc.id, ...doc.data()}))
-			console.log(result);
+			let result = [];
+			if(name.trim().length) {
+				const docsRef = query(collectionGroup(db, "contentsProducts"),
+					orderBy('name'),
+					startAt(name),
+					endAt(name + '\uf8ff'),
+					limit(7)
+				);
+				result = (await getDocs(docsRef)).docs.map(doc => ({id: doc.id, ...doc.data()}))
+			}
 			dispatch({type: SEARCH_PRODUCTS, payload: result})
 			dispatch({type: HIDE_LOADER});
 		} catch(e){
@@ -427,7 +430,6 @@ export function verifyOTP(otp) {
 				dispatch({type: INIT_USER, payload: result.user});
 				dispatch({type: HIDE_LOADER});
 			} catch(e) {
-				console.log();
 				dispatch(showMessage(e.message, 'ERROR') );
 				dispatch({type: HIDE_LOADER});
 			}
@@ -456,7 +458,6 @@ export function updateUserEmail(user, email = ''){
 			await updateEmail(user, email)
 			dispatch({type: HIDE_LOADER});
 		} catch(e){
-			console.log(e);
 			dispatch(showMessage(e.message, 'ERROR') );
 			dispatch({type: HIDE_LOADER});
 		}
@@ -636,7 +637,6 @@ export function getUserData(user){
 			dispatch({type: GET_PERSONAL_USER, payload: data});
 			dispatch({type: HIDE_LOADER});
 		} catch(e){
-			console.log(e);
 			dispatch(showMessage(e.message, 'ERROR') );
 			dispatch({type: HIDE_LOADER});
 		}
@@ -666,7 +666,6 @@ export function fetchOrders(limitNum = 1, id){
 		try{
 			dispatch({type: HIDE_MESSAGE});
 			dispatch({type: SHOW_LOADER});
-			console.log('f');
 			const lengthOrders = await getDocs(query(collection(db, "orders"),
 				orderBy('price'),
 				where('userUid', '==', id)

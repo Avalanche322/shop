@@ -1,8 +1,7 @@
 import { getDownloadURL, ref } from 'firebase/storage';
 import { useState, useEffect } from 'react';
-import {AiFillStar} from 'react-icons/ai';
-import {BsCart4} from 'react-icons/bs'
 import { useDispatch, useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { storage } from '../firebase';
 import placeholder  from '../img/placeholder.png';
@@ -21,6 +20,7 @@ function ProductItem({content, products}) {
 		}
 		getImg()
 		setProductInOrder(order.products.find(x => x.id === content.id)?.count ?? 0)
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 	function handlerAddToOrder(){
 		setProductInOrder(productInOrder + 1);
@@ -50,11 +50,21 @@ function ProductItem({content, products}) {
 					<h3 className='fs-6 mt-2'>{content.name}</h3>
 					<div className='d-flex align-items-center'>
 						<div>
-							<AiFillStar className={`${content.mark >= 1 ? 'item-products__star_active' : 'item-products__star'}`}/>
-							<AiFillStar className={`${content.mark >= 2 ? 'item-products__star_active' : 'item-products__star'}`}/>
-							<AiFillStar className={`${content.mark >= 3 ? 'item-products__star_active' : 'item-products__star'}`}/>
-							<AiFillStar className={`${content.mark >= 4 ? 'item-products__star_active' : 'item-products__star'}`}/>
-							<AiFillStar className={`${content.mark >= 5 ? 'item-products__star_active' : 'item-products__star'}`} />
+							<FontAwesomeIcon 
+								icon="fa-solid fa-star" 
+								className={`${content.mark >= 1 ? 'item-products__star_active' : 'item-products__star'}`}/>
+							<FontAwesomeIcon 
+								icon="fa-solid fa-star" 
+								className={`${content.mark >= 2 ? 'item-products__star_active' : 'item-products__star'}`}/>
+							<FontAwesomeIcon 
+								icon="fa-solid fa-star" 
+								className={`${content.mark >= 3 ? 'item-products__star_active' : 'item-products__star'}`}/>
+							<FontAwesomeIcon 
+								icon="fa-solid fa-star" 
+								className={`${content.mark >= 4 ? 'item-products__star_active' : 'item-products__star'}`}/>
+							<FontAwesomeIcon 
+								icon="fa-solid fa-star" 
+								className={`${content.mark >= 5 ? 'item-products__star_active' : 'item-products__star'}`} />
 						</div>
 						<span className='me-3 ms-1 fw-bold'>{content.mark}</span>
 						<span className='product__mark'>{content.marks.length} оцінки</span>
@@ -76,7 +86,7 @@ function ProductItem({content, products}) {
 					onClick={() => handlerAddToOrder()} 
 						className='item-products__cart shadow rounded-circle p-2'
 					>
-						<BsCart4 className='fs-4'/>
+						<FontAwesomeIcon icon="fa-solid fa-cart-shopping" className='fs-6' />
 					</button>
 				: <AddToCart 
 					count={productInOrder} 

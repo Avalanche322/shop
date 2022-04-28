@@ -1,4 +1,4 @@
-import { Container, Form, Button, FloatingLabel, Modal } from "react-bootstrap";
+import { Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { makeOrder, setOrder } from "../redux/actions";
@@ -108,6 +108,7 @@ const Checkout = () => {
 		} else{
 			setAddressDelivery(active_address)
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[address])
 
 	/*Set time */
@@ -119,6 +120,7 @@ const Checkout = () => {
 		} else {
 			setTime(timeShopData[0].text)
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[timeDeliveryData, timeShopData])
 
 	/*Set day*/
@@ -128,6 +130,7 @@ const Checkout = () => {
 			setTimeDelivery(timeDelivery.filter(time => checkTime(time.value)))
 			setTimeShop(timeDelivery.filter(time => checkTime(time.value)))
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[])
 	
 	/*active card*/
@@ -138,6 +141,7 @@ const Checkout = () => {
 	/* Set streets depends on town*/
 	useEffect(() => {
 		setAddressState(address_shop.filter(x => x.town === addressShop.town)[0] ?? address_shop[0])
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [addressShop])
 
 	return (

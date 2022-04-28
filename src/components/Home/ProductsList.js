@@ -1,5 +1,5 @@
 import Slider from "react-slick";
-import {MdKeyboardArrowLeft, MdKeyboardArrowRight} from 'react-icons/md'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProductItem from "../ProductItem";
 import { Link } from "react-router-dom";
 
@@ -41,8 +41,9 @@ function ProductsList({product}) {
 	function SlickArrowLeft({ currentSlide, slideCount, ...props }){
 		
 		return (
-			<MdKeyboardArrowLeft
+			<FontAwesomeIcon
 				{...props}
+				icon="fa-solid fa-angle-left"
 				className={
 					"slick-prev slick-arrow ms-2 shadow-lg rounded-circle" +
 					(currentSlide === 0 ? " slick-disabled d-none" : "")
@@ -55,8 +56,9 @@ function ProductsList({product}) {
 	}
 	function SlickArrowRight({ currentSlide, slideCount, ...props }){
 		return (
-			<MdKeyboardArrowRight
+			<FontAwesomeIcon
 				{...props}
+				icon="fa-solid fa-angle-right"
 				className={
 					"slick-next slick-arrow me-2 shadow-lg rounded-circle" +
 					(currentSlide === slideCount - settings.slidesToShow ? " slick-disabled d-none" : "")

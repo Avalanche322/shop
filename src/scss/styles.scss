@@ -6,6 +6,7 @@
 @import "./Header/userDropDown.scss";
 @import "./Header/headerCart.scss";
 @import "./Header/contactsBlock.scss";
+@import "./Header/searchHeader.scss";
 
 @import "./Home/home.scss";
 @import "./Home/homeBanner.scss";
@@ -26,7 +27,8 @@
 @import "./loader.scss";
 @import "./addtoCartBtn.scss";
 @import "./product.scss";
-@import "./allStafsBottom.scss";
+@import "./allStafs.scss";
+@import "./ScrollToTop.scss";
 
 ::-webkit-scrollbar {
 	width: 15px;

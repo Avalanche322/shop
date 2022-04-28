@@ -1,6 +1,5 @@
 import { Container } from 'react-bootstrap';
-import { FaFacebookSquare, FaViber } from 'react-icons/fa'
-import { BsTelephone, BsTelegram, BsInstagram } from 'react-icons/bs'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Footer() {
 	return (
@@ -14,20 +13,28 @@ function Footer() {
 			<Container fluid='md' className='d-flex flex-column align-items-center position-relative'>
 				<ul className="d-flex gap-4 fs-3 footer__list m-0 p-0">
 					<li>
-						<a href="#" className='footer__link'><FaFacebookSquare/></a>
+						<a href="#" className='footer__link'>
+							<FontAwesomeIcon icon="fa-brands fa-facebook-square" />
+						</a>
 					</li>
 					<li>
-						<a href="#" className='footer__link'><BsTelegram/></a>
+						<a href="#" className='footer__link'>
+							<FontAwesomeIcon icon="fa-brands fa-telegram" />
+						</a>
 					</li>
 					<li>
-						<a href="#" className='footer__link'><BsInstagram/></a>
+						<a href="#" className='footer__link'>
+							<FontAwesomeIcon icon="fa-brands fa-instagram" />
+						</a>
 					</li>
 					<li>
-						<a href="#" className='footer__link'><FaViber/></a>
+						<a href="#" className='footer__link'>
+							<FontAwesomeIcon icon="fa-brands fa-viber" />
+						</a>
 					</li>
 				</ul>
 				<a href="tel:0800301706" className="d-flex align-items-center footer__link my-3">
-					<BsTelephone className="me-2 fs-3"/>
+					<FontAwesomeIcon icon="fa-solid fa-phone" className="me-2 fs-5" />
 					<span className="fw-bold">0 800 301 706</span>
 				</a>
 				<ul className='d-flex flex-wrap flex-sm-nowrap justify-content-center gap-4 fs-6 footer__list m-0 p-0 mb-3'>

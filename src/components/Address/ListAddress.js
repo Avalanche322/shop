@@ -1,7 +1,6 @@
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { FiPlus } from 'react-icons/fi'
-import { FaTimes } from 'react-icons/fa'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { updateUserAddressField, removeUserAddressDelivery, removeUserAddressShop } from "../../redux/actions";
 
 const ListAddress = ({type,handlerType, address,handlerUpdateAddress, handlerShowAddAddress}) => {
@@ -59,7 +58,7 @@ const ListAddress = ({type,handlerType, address,handlerUpdateAddress, handlerSho
 										className="remove-btn"
 										onClick={() => handelDelete(item)}
 										type="button"
-										><FaTimes/>
+										><FontAwesomeIcon icon="fa-solid fa-xmark" />
 									</button>
 								</li>
 							)
@@ -69,7 +68,9 @@ const ListAddress = ({type,handlerType, address,handlerUpdateAddress, handlerSho
 						className='btn_orange rounded-pill py-2 px-3 d-block mx-auto mt-auto' 
 						onClick={handlerShowAddAddress}
 					>
-						<span className="me-2"><FiPlus/></span> 
+						<span className="me-2">
+							<FontAwesomeIcon icon="fa-solid fa-plus" />
+						</span> 
 						<span>Додати адресу</span>
 					</Button>
 				</>
@@ -100,7 +101,7 @@ const ListAddress = ({type,handlerType, address,handlerUpdateAddress, handlerSho
 											className="remove-btn"
 											onClick={() => handelDelete(item)}
 											type="button"
-											><FaTimes/>
+											><FontAwesomeIcon icon="fa-solid fa-xmark" />
 										</button>
 									</li>
 								)
@@ -111,7 +112,9 @@ const ListAddress = ({type,handlerType, address,handlerUpdateAddress, handlerSho
 						className='btn_orange rounded-pill py-2 px-3 mt-5 d-block mx-auto'  
 						onClick={handlerShowAddAddress}
 					>
-						<span className="me-2"><FiPlus/></span> 
+						<span className="me-2">
+							<FontAwesomeIcon icon="fa-solid fa-plus" />
+						</span> 
 						<span>Додати супермаркет</span>
 					</Button>
 				</div>

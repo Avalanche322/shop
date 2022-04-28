@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { FaTimes } from 'react-icons/fa'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { removeUserPayments, showMessage, updateUserPayments, updateUserPaymentsField } from "../../redux/actions";
 import PaymentCard from "../../components/PaymentCard";
 
@@ -58,7 +58,9 @@ const PaymentSettings = () => {
 								<button 
 									className="remove-btn" 
 									onClick={() => handlerRemoveCard(payment)}
-								><FaTimes/></button>
+								>
+									<FontAwesomeIcon icon="fa-solid fa-xmark" />
+								</button>
 							</li>
 						)
 					})}

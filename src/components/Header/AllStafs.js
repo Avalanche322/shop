@@ -1,5 +1,4 @@
-import { BsFillBasketFill } from 'react-icons/bs'
-import { IoIosArrowDown } from 'react-icons/io'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from "react";
 import { Link } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
@@ -15,25 +14,27 @@ function AllStafs({diraction = 'down'}) {
 				onClick(e);
 			}} 
 			className="fs-6 btn_orange py-2 px-3 d-flex align-items-center rounded-pill">
-			<BsFillBasketFill className="fs-5"/>
+			<FontAwesomeIcon icon="fa-solid fa-basket-shopping" className="fs-5" />
 			{children}
 		</div>
 	));
-
 	return (
-		<Dropdown drop={diraction}>
+		<Dropdown drop={diraction} className='all-stafs'>
 			<Dropdown.Toggle as={CustomToggle}>
 				<span className="mx-2">Всі товари</span>
-				<IoIosArrowDown/>
+				<FontAwesomeIcon icon="fa-solid fa-angle-down" />
 			</Dropdown.Toggle>
 			<Dropdown.Menu>
 				{products.map(product => {
 					return (
-						<Dropdown.ItemText key={product.id}>
+						<Dropdown.ItemText className="all-stafs__item" key={product.id}>
 							<Link 
 							to={`/category/${product.link}`}
 							state={{ id: product.id }}
-							className="">{product.title}</Link>
+							className="all-stafs__link w-100 d-flex align-items-center gap-2">
+								<FontAwesomeIcon icon={product.icon} className='all-stafs__icon' />
+								<span>{product.title}</span>
+							</Link>
 						</Dropdown.ItemText>
 					)
 				})}

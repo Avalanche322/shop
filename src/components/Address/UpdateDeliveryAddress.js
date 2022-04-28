@@ -1,6 +1,6 @@
 import { FloatingLabel, Form, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { IoIosArrowBack } from 'react-icons/io'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const UpdateDeliveryAddress = ({showUpdateAddress, handlerHideAddAddress, updateAddressItem, setUpdateAddressItem, addressState}) => {
 	const loading = useSelector(state => state.app.loading);
@@ -15,7 +15,7 @@ const UpdateDeliveryAddress = ({showUpdateAddress, handlerHideAddAddress, update
 						type="button"
 						className="mb-3 address__btn_light rounded-pill fw-bold d-flex align-items-center gap-1"
 						onClick={() => handlerHideAddAddress('delivery')}>
-						<IoIosArrowBack/> 
+						<FontAwesomeIcon icon="fa-solid fa-arrow-left-long" />
 						<span>До моїх адрес</span>
 					</button>
 					<FloatingLabel className="mb-2" controlId="town" label="Місто">
@@ -67,7 +67,7 @@ const UpdateDeliveryAddress = ({showUpdateAddress, handlerHideAddAddress, update
 						className="mb-3 address__btn_light rounded-pill fw-bold d-flex align-items-center gap-1" 
 						onClick={() => handlerHideAddAddress('shop')}
 					>
-						<IoIosArrowBack/> 
+						<FontAwesomeIcon icon="fa-solid fa-arrow-left-long" />
 						<span>Повернутися до моїх супермаркетів</span>
 					</button>
 					<FloatingLabel className="mb-2" controlId="select-town" label="Місто">

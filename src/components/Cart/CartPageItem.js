@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getDownloadURL, ref } from 'firebase/storage';
-import { FaTimes } from 'react-icons/fa'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import placeholder  from '../../img/placeholder.png';
 import { storage } from '../../firebase';
 import { addToOrder, removeFromOrder } from '../../redux/actions';
@@ -30,6 +30,7 @@ const CartPageItem = ({item}) => {
 			setImgUrl(fileUrl)
 		}
 		getImg()
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 	return (
 		<>
@@ -52,7 +53,9 @@ const CartPageItem = ({item}) => {
 					/>
 					<span className='fw-bold'>{(item.price * item.count).toFixed(2)} грн</span>
 				</div>
-				<button className='cart__remove' onClick={() => dispatch(removeFromOrder(item))}><FaTimes/></button>
+				<button className='cart__remove' onClick={() => dispatch(removeFromOrder(item))}>
+					<FontAwesomeIcon icon="fa-solid fa-xmark" />
+				</button>
 			</div>
 		</>
 	);

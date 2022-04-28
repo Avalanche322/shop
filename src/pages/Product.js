@@ -3,9 +3,7 @@ import { Container } from "react-bootstrap";
 import { getDownloadURL, ref } from 'firebase/storage';
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {AiFillStar} from 'react-icons/ai';
-import {BsCart4} from 'react-icons/bs';
-import {MdOutlineDeliveryDining} from 'react-icons/md'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from "moment";
 import { addToOrder, makeMark, removeFromOrder, updateMark } from '../redux/actions';
 import { storage } from '../firebase';
@@ -92,7 +90,10 @@ const Product = () => {
 									readOnly
 								/>
 								<label aria-label="1 star" className="ratting-product__label" htmlFor="rating-1">
-									<AiFillStar className="fs-4 ratting-product__icon ratting-product__icon_star"/>
+									<FontAwesomeIcon 
+										icon="fa-solid fa-star" 
+										className="fs-4 ratting-product__icon ratting-product__icon_star"
+									/>
 								</label>
 								<input 
 									className="ratting-product__input" 
@@ -105,7 +106,10 @@ const Product = () => {
 								/>
 
 								<label aria-label="2 stars" className="ratting-product__label" htmlFor="rating-2">
-									<AiFillStar className="fs-4 ratting-product__icon ratting-product__icon_star"/>
+									<FontAwesomeIcon 
+										icon="fa-solid fa-star" 
+										className="fs-4 ratting-product__icon ratting-product__icon_star"
+									/>
 								</label>
 								<input 
 									className="ratting-product__input" 
@@ -118,7 +122,10 @@ const Product = () => {
 								/>
 
 								<label aria-label="3 stars" className="ratting-product__label" htmlFor="rating-3">
-									<AiFillStar className="fs-4 ratting-product__icon ratting-product__icon_star"/>
+									<FontAwesomeIcon 
+										icon="fa-solid fa-star" 
+										className="fs-4 ratting-product__icon ratting-product__icon_star"
+									/>
 								</label>
 								<input 
 									className="ratting-product__input" 
@@ -131,7 +138,10 @@ const Product = () => {
 								/>
 
 								<label aria-label="4 stars" className="ratting-product__label" htmlFor="rating-4">
-									<AiFillStar className="fs-4 ratting-product__icon ratting-product__icon_star"/>
+									<FontAwesomeIcon 
+										icon="fa-solid fa-star" 
+										className="fs-4 ratting-product__icon ratting-product__icon_star"
+									/>
 								</label>
 								<input 
 									className="ratting-product__input" 
@@ -142,9 +152,11 @@ const Product = () => {
 									checked={mark === 4}
 									readOnly
 								/>
-
 								<label aria-label="5 stars" className="ratting-product__label" htmlFor="rating-5">
-									<AiFillStar className="fs-4 ratting-product__icon ratting-product__icon_star"/>
+									<FontAwesomeIcon 
+										icon="fa-solid fa-star" 
+										className="fs-4 ratting-product__icon ratting-product__icon_star"
+									/>
 								</label>
 								<input 
 									className="ratting-product__input" 
@@ -175,7 +187,7 @@ const Product = () => {
 							onClick={() => handlerAddToOrder()} 
 								className='btn_orange rounded-pill py-2 px-4 d-flex align-items-center gap-2 product__cart'
 							>
-								<BsCart4 className='fs-4'/> 
+								<FontAwesomeIcon icon="fa-solid fa-cart-shopping" className='fs-5' />
 								<span>В кошик</span>
 							</button>
 						: <div className="product__add-product">
@@ -187,11 +199,11 @@ const Product = () => {
 						}
 						{moment().hour() < 17 
 							? <p className="mt-4 d-flex align-items-center gap-1 product__delivery">
-									<MdOutlineDeliveryDining className="fs-4"/> 
+									<FontAwesomeIcon icon="fa-solid fa-truck" className="fs-5" />
 									<span>Сьогодні з {timeShop[0]?.text}</span>
 								</p>
 							: <p className="mt-4 d-flex align-items-center gap-1 product__delivery">
-									<MdOutlineDeliveryDining className="fs-4"/> 
+									<FontAwesomeIcon icon="fa-solid fa-truck" className="fs-5" />
 									<span>Завтра з {timeDeliveryData[0]?.text}</span>
 								</p>
 						}

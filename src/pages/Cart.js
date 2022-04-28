@@ -1,6 +1,7 @@
 import { Container, Button, Form, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { BsCartX, BsCart4 } from "react-icons/bs"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { Link } from "react-router-dom";
 import CartPageItem from "../components/Cart/CartPageItem";
 import { removeOrder, setOrder } from "../redux/actions";
@@ -25,7 +26,6 @@ const Cart = () => {
 						{!!order.products.length && <Button 
 							onClick={() => handlerRemoveOrder()}
 							className="cart__btn_light rounded-pill px-3 d-flex align-items-center gap-1">
-							<BsCartX/>
 							Очистити кошик
 						</Button>}
 					</div>
@@ -56,7 +56,7 @@ const Cart = () => {
 						<div className="bg-white rounden-3 shadow w-100 h-100 d-flex justify-content-center align-items-center text-center">
 							<div className="p-2 cart__not-products not-products-cart">
 								<div className="not-products-cart__logo rounded-circle">
-									<BsCart4 />
+									<FontAwesomeIcon icon="fa-solid fa-cart-shopping" />
 								</div>
 								<p className="my-4">У вашому кошику немає товарів</p>
 								<Link to='/' className="btn_orange py-2 px-3 rounded-pill d-inline-block">

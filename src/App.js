@@ -23,6 +23,7 @@ import Profile from "./pages/Settings/Profile";
 import PaymentSettings from "./pages/Settings/PaymentSettings";
 import Orders from "./pages/Settings/Orders";
 import Product from "./pages/Product";
+import ScrollToTop from "./components/App/ScrollToTop";
 
 
 
@@ -44,6 +45,7 @@ function App() {
 			dispatch(fetchTime())
 		}
 		dispatch(fetchProducts())
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 	/*get personal data*/
 	
@@ -80,6 +82,7 @@ function App() {
 				</Routes>
 			</main>
 			<AllStafsBottom/>
+			<ScrollToTop/>
 			<Footer/>
 		</div>	
 	);

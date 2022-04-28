@@ -7,12 +7,12 @@
 	&.slick-next {
 		position: absolute;
 		top: 50% !important;
-		width: 35px;
-		height: 35px;
+		width: 30px;
+		height: 30px;
 		color: $gray-500;
 		background-color: rgba($white, 0.5);
 		&:hover{
-			color: $black;
+			color: $orange-500;
 		}
 	}
 	&.slick-disabled {
