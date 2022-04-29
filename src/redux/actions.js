@@ -23,7 +23,8 @@ import {
 	onAuthStateChanged, 
 	signOut, 
 	updateEmail,
-	getAdditionalUserInfo 
+	getAdditionalUserInfo, 
+	updateProfile
 } from "firebase/auth";
 import { db, auth } from "../firebase";
 import { 
@@ -202,7 +203,11 @@ export function fetchProductsFiltered(categories = [], price = 100, limitNum = 7
 				orderBy("price"), 
 				where('typeCategory', 'in', categories),
 			)))
-			const lengthFiltered = allProductsList.docs.length
+			const lengthFiltered = (await getDocs(query(productsListRef, 
+						orderBy("price"), 
+						where('price', '<=', +price),
+						where('typeCategory', 'in', categories),
+					))).docs.length
 			if(categories.length) {
 				firsProducts  = (await getDocs(query(productsListRef, 
 					orderBy("price"), 
@@ -470,6 +475,10 @@ export function updateUserData(user, data = {}){
 			dispatch({type: SHOW_LOADER});
 			const usersRef = doc(db, 'users', user.uid)
 			await updateDoc(usersRef, data)
+			if(!!data.contacts.firstName?.trim() && data.contacts.firstName !== user.displayName) {
+				await updateProfile(user, {displayName: data.contacts.firstName})
+				dispatch({type: INIT_USER, payload: user});
+			}
 			dispatch({type: SET_PERSONAL_USER, payload: data});
 			dispatch({type: HIDE_LOADER});
 		} catch(e){

@@ -12,6 +12,7 @@ import Search from "./Search";
 
 function Header() {
 	const user = useSelector(state => state.user.user);
+	const contacts = useSelector(state => state.user.personl.contacts);
 	const address = useSelector(state => state.user.personl.address);
 	const location = useLocation();
 	const dispatch = useDispatch();
@@ -30,21 +31,25 @@ function Header() {
 						placement="start">
 						<Offcanvas.Header closeButton>
 						<Offcanvas.Title>
-							<NavLink 
-								to={`${location.pathname}auth`}
-								state={{ backgroundLocation: location }}
-								className="d-flex align-items-center sidebar__top"
-							>
+							<div className="d-flex align-items-center sidebar__top">
 								<FontAwesomeIcon icon="fa-solid fa-user" className="fs-4" />
 								{user 
-								?  <div className="ms-2 d-flex flex-column sidebar__text">
-										<span className="lh-1">{user.displayName ?? 'Гість'}</span>
-									</div>
-								: <div className="ms-2 d-flex flex-column sidebar__text">
+								?  <NavLink 
+										to='/settings/profile' 
+										className="ms-2 d-flex flex-column sidebar__text sidebar__link"
+									>
+										<span className="lh-1">{contacts.firstName ?? 'Гість'}</span>
+									</NavLink>
+								: <NavLink 
+									to={`${location.pathname}auth`} 
+									state={{ backgroundLocation: location }} 
+									className="ms-2 d-flex flex-column sidebar__text sidebar__link"
+									>
 										<span className="lh-1">Вхід/</span>
 										<span className="lh-2">Реєстрація</span>
-									</div>}
-							</NavLink>
+									</NavLink>
+								}
+							</div>
 						</Offcanvas.Title>
 						</Offcanvas.Header>
 						<Offcanvas.Body className="d-flex flex-column p-0">
