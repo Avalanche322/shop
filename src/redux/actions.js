@@ -783,31 +783,30 @@ export function makeOrder(content){
 export function addProducts(){
 	return async dispatch => {
 		try{
-			const typeCategory = 'test'
 
-			const docRef = doc(db, "products", 'b9Ti2jcwMjlSHaTNET43');
+			const docRef = doc(db, "products", '');
 			const colRef = collection(docRef, "contentsProducts")	
 			const newProduct = await addDoc(colRef, {	
-				countMarks: '',
 				imgUrl: 'gs://shop-a76f5.appspot.com/grocery/888567_480x480wwm_5081246e-180a-6314-e5a6-093098a18c9c.png',
-				mark: '',
+				mark: 0, // do't touch
+				marks: [], // do't touch
+				info: [
+					{ 
+						title: '',
+						value: '',
+					}
+				],
 				name: 'test',
 				price: 39.99,
+				oldPrice: 0.0,
 				type: 'г',
 				weight: 500,
-				typeCategory,
-				id: ''
+				typeCategory: 'test',
+				id: '' // do't touch
 			})
-			const product = (await getDoc(docRef)).data();
+			(await getDoc(docRef)).data();
 			await updateDoc(doc(db, newProduct.path), {
 				id: newProduct.id
-			})
-			const categoryCount = product.category.filter(x=> x.name === typeCategory)[0]?.count ?? 0;
-			await updateDoc(docRef, {
-				category: [
-					...product.category.filter(x=> x.name !== typeCategory), 
-					{name: typeCategory, count: categoryCount + 1
-				}]
 			})
 		} catch(e){
 			dispatch(showMessage(e.message, 'ERROR') );
