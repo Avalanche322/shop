@@ -41,7 +41,7 @@ function Header() {
 										<span className="lh-1">{contacts.firstName ?? 'Гість'}</span>
 									</NavLink>
 								: <NavLink 
-									to={`${location.pathname}auth`} 
+									to={`${location.pathname === '/' ? location.pathname : location.pathname + '/'}auth`}
 									state={{ backgroundLocation: location }} 
 									className="ms-2 d-flex flex-column sidebar__text sidebar__link"
 									>
@@ -108,7 +108,7 @@ function Header() {
 						{/*User*/}
 						{!user ? <NavLink 
 							className="fs-5 user-menu rounded-circle" 
-							to={`${location.pathname}auth`}
+							to={`${location.pathname === '/' ? location.pathname : location.pathname + '/'}auth`}
 							state={{ backgroundLocation: location }}>
 							<FontAwesomeIcon icon="fa-solid fa-user" />
 						</NavLink>

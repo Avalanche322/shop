@@ -29,9 +29,9 @@ function getPriceWeight(content){
 
 const ordersReducer = (state = initialState, action) => {
 	let currentOrder = { 
-		userUid: JSON.parse(localStorage.getItem('user'))?.uid,
+		userUid: JSON.parse(localStorage.getItem('user'))?.uid ?? '',
 		products: [],
-		price: 0.00,
+		price: 49,
 		message: '',
 		weight: 0
 	}
@@ -49,7 +49,7 @@ const ordersReducer = (state = initialState, action) => {
 			return {...state, currentOrder }
 		case ADD_TO_ORDER:
 			currentOrder = {
-				...state.currentOrder, 
+				...state.currentOrder,
 				products: [...state.currentOrder.products.filter(x => x.id !== action.payload.id),
 				action.payload]
 			}

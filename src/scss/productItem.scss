@@ -32,6 +32,9 @@
 		width: 40px;
 		height: 40px;
 		@extend %reset-btn;
+		&:hover {
+			color: $orange-500;
+		}
 	}
 	&__star{
 		color: $gray-500;

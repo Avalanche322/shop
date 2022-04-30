@@ -42,9 +42,9 @@ function App() {
 		dispatch(unsubscribe());
 		if(user) {
 			dispatch(getUserData(user));
-			dispatch(fetchAddress())
-			dispatch(fetchTime())
 		}
+		dispatch(fetchAddress())
+		dispatch(fetchTime())
 		dispatch(fetchProducts())
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
@@ -75,8 +75,8 @@ function App() {
 						<Route path="payment" element={<PaymentSettings />} />
 						<Route path="purchases" element={<Orders />} />
 					</Route>
-					<Route path="/product/:id" element={user ? <Product /> : <Navigate to="/" />} />
-					<Route path="/cart" element={user ? <Cart /> : <Navigate to="/" />} />
+					<Route path="/product/:id" element={<Product />} />
+					<Route path="/cart" element={<Cart />} />
 					<Route path="/checkout" element={(user && order.products.length) ? <Checkout /> : <Navigate to="/" />} />
 					<Route path="/category/:category" element={<AllProducts />} />
 					<Route path="*" element={<NotFound />} />

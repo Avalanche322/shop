@@ -12,14 +12,14 @@ const Orders = () => {
 	const orders = useSelector(state => state.orders.orders);
 	const loading = useSelector(state => state.app.loading);
 	const userId = useSelector(state => state.user.user.uid);
-	const [countOrders, setCountOrders] = useState(7);
+	const [countOrders, setCountOrders] = useState(1);
 	
 	useEffect(() => {
-		dispatch(fetchOrders(countOrders, userId));
+		dispatch(fetchOrders(countOrders, orders.content, userId));
 	}, [])
 	function handlerPagination() {
-		setCountOrders(countOrders + 7);
-		dispatch(fetchOrders(countOrders + 7, userId));
+		setCountOrders(countOrders + 1);
+		dispatch(fetchOrders(countOrders + 1, orders.content, userId));
 	}
 	
 	function handlerRepeatOrder(order) {

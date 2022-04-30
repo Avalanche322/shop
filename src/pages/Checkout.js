@@ -130,6 +130,9 @@ const Checkout = () => {
 			setTimeDelivery(timeDelivery.filter(time => checkTime(time.value)))
 			setTimeShop(timeDelivery.filter(time => checkTime(time.value)))
 		}
+		if(!payments.cards.length) {
+			setTypePayment('card')
+		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[])
 	
@@ -188,6 +191,7 @@ const Checkout = () => {
 						</div>
 						<Sidebar
 							handlerMessage={handlerMessage}
+							typePayment={typePayment}
 						/>
 					</div>
 				</Form>

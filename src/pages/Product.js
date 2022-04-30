@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { getDownloadURL, ref } from 'firebase/storage';
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from "moment";
@@ -12,8 +12,8 @@ import placeholder from '../img/placeholder.png'
 
 const Product = () => {
 	let location = useLocation()
-	let product = location.state.product
-	let products = location.state.products
+	let product = location.state.product ?? {marks: [], info: []}
+	let products = location.state.products ?? {contents: []}
 	const dispatch = useDispatch();
 	const order = useSelector(state => state.orders.currentOrder)
 	const user = useSelector(state => state.user.user);
@@ -79,7 +79,8 @@ const Product = () => {
 					<div className="d-flex flex-column col-md-6 col-sm-7 col-12">
 						<h2>{product.name}</h2>
 						<div className='d-flex align-items-center'>
-							<div className="ratting-product product__ratting d-flex"  onChange={handlerMark}>
+							{ user ? 
+							<div className="ratting-product product__ratting d-flex" onChange={handlerMark}>
 								<input 
 									className="ratting-product__input" 
 									name="rating" 
@@ -168,6 +169,99 @@ const Product = () => {
 									readOnly
 								/>
 							</div>
+							: <Link 
+									to={`${location.pathname}/auth`} 
+									state={{ backgroundLocation: location }} 
+									className="ratting-product product__ratting d-flex"
+								>
+								<input 
+									className="ratting-product__input" 
+									name="rating" 
+									id="rating-0" 
+									value="0" 
+									type="radio" 
+									checked={!mark}
+									readOnly
+								/>
+								<label aria-label="1 star" className="ratting-product__label" htmlFor="rating-1">
+									<FontAwesomeIcon 
+										icon="fa-solid fa-star" 
+										className="fs-4 ratting-product__icon ratting-product__icon_star"
+									/>
+								</label>
+								<input 
+									className="ratting-product__input" 
+									name="rating" 
+									id="rating-1" 
+									value="1" 
+									type="radio"
+									checked={mark === 1}
+									readOnly
+								/>
+
+								<label aria-label="2 stars" className="ratting-product__label" htmlFor="rating-2">
+									<FontAwesomeIcon 
+										icon="fa-solid fa-star" 
+										className="fs-4 ratting-product__icon ratting-product__icon_star"
+									/>
+								</label>
+								<input 
+									className="ratting-product__input" 
+									name="rating" 
+									id="rating-2" 
+									value="2" 
+									type="radio"
+									checked={mark === 2}
+									readOnly
+								/>
+
+								<label aria-label="3 stars" className="ratting-product__label" htmlFor="rating-3">
+									<FontAwesomeIcon 
+										icon="fa-solid fa-star" 
+										className="fs-4 ratting-product__icon ratting-product__icon_star"
+									/>
+								</label>
+								<input 
+									className="ratting-product__input" 
+									name="rating" 
+									id="rating-3" 
+									value="3" 
+									type="radio"
+									checked={mark === 3}
+									readOnly
+								/>
+
+								<label aria-label="4 stars" className="ratting-product__label" htmlFor="rating-4">
+									<FontAwesomeIcon 
+										icon="fa-solid fa-star" 
+										className="fs-4 ratting-product__icon ratting-product__icon_star"
+									/>
+								</label>
+								<input 
+									className="ratting-product__input" 
+									name="rating" 
+									id="rating-4" 
+									value="4" 
+									type="radio"
+									checked={mark === 4}
+									readOnly
+								/>
+								<label aria-label="5 stars" className="ratting-product__label" htmlFor="rating-5">
+									<FontAwesomeIcon 
+										icon="fa-solid fa-star" 
+										className="fs-4 ratting-product__icon ratting-product__icon_star"
+									/>
+								</label>
+								<input 
+									className="ratting-product__input" 
+									name="rating" 
+									id="rating-5" 
+									value="5" 
+									type="radio"
+									checked={mark === 5}
+									readOnly
+								/>
+							</Link>}
 							<span className='me-3 ms-2 fw-bold'>{mark}</span>
 							<span className='product__mark'>{product.marks.length} оцінки</span>		
 						</div>

@@ -45,7 +45,7 @@ const Payment = ({
 				<Form.Check
 					name="payment"
 					type='radio'
-					defaultChecked
+					checked={typePayment === 'card-on-web'}
 					onChange={handlerPayment}
 					value={'card-on-web'}
 					label={`Карткою на сайті`}
@@ -56,6 +56,7 @@ const Payment = ({
 					name="payment"
 					type='radio'
 					value={'card'}
+					checked={typePayment === 'card'}
 					onChange={handlerPayment}
 					label={`Карткою при отриманні`}
 					id={`radio-delivery-card`}
@@ -65,6 +66,7 @@ const Payment = ({
 					name="payment"
 					type='radio'
 					value={'cach'}
+					checked={typePayment === 'cach'}
 					onChange={handlerPayment}
 					label={`Готівкою`}
 					id={`radio-delivery-cash`}

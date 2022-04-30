@@ -659,10 +659,23 @@ export function unsubscribe() {
 			if(user){
 				dispatch({type: INIT_USER, payload: user});
 				localStorage.setItem('user', JSON.stringify(user));
+				//localStorage.setItem('currentOrder', JSON.stringify({ 
+				//	userUid: user.uid ?? '',
+				//	products: [],
+				//	price: 49,
+				//	message: '',
+				//	weight: 0
+				//}));
 			} else{
 				dispatch({type: INIT_USER, payload: null});
 				localStorage.removeItem('user');
-				localStorage.removeItem('currentOrder');
+				localStorage.setItem('currentOrder', JSON.stringify({ 
+					userUid: '',
+					products: [],
+					price: 49,
+					message: '',
+					weight: 0
+				}));
 				dispatch({type: HIDE_LOADER});
 			}
 		})
@@ -670,7 +683,7 @@ export function unsubscribe() {
 }
 
 /*orders*/
-export function fetchOrders(limitNum = 1, id){
+export function fetchOrders(limitNum = 1, ordersContent, id){
 	return async dispatch => {
 		try{
 			dispatch({type: HIDE_MESSAGE});
@@ -679,10 +692,18 @@ export function fetchOrders(limitNum = 1, id){
 				orderBy('price'),
 				where('userUid', '==', id)
 			))
-			const ordersList = await getDocs(query(collection(db, "orders"),
+			const firsOrders  = (await getDocs(query(
+				collection(db, "orders"), 
+				orderBy("price"), 
+				where('userUid', '==', id),
+				limit(limitNum)),
+			))
+			const lastDoc = firsOrders.docs[firsOrders.docs.length-1]
+			let ordersList = await getDocs(query(collection(db, "orders"),
 				orderBy('price'),
-				where('userUid', '==', id), 
-				limit(limitNum)
+				where('userUid', '==', id),
+				startAt(lastDoc),
+				limit(1)
 			));
 			let allIdProducts = []
 			let result = []
@@ -704,9 +725,13 @@ export function fetchOrders(limitNum = 1, id){
 					})
 				}
 			}
-			dispatch({type: FETCH_ORDER, payload: {content: result, lengthOrders: lengthOrders.docs.length}});
+			dispatch({type: FETCH_ORDER, payload: {
+				content: [...new Set([...ordersContent, ...result])], 
+				lengthOrders: lengthOrders.docs.length}
+			});
 			dispatch({type: HIDE_LOADER});
 		} catch(e){
+			console.log(e);
 			dispatch(showMessage(e.message, 'ERROR') );
 			dispatch({type: HIDE_LOADER});
 		}
@@ -780,6 +805,8 @@ export function makeOrder(content){
 			await updateDoc(doc(db, newDoc.path), {
 				orderId: newDoc.id
 			})
+			dispatch(showMessage(`Ваш номер замовлення ${newDoc.id}. Приємних покумок.`, 'Замовлення') 
+			);
 			dispatch({type: HIDE_LOADER});
 		} catch(e){
 			dispatch(showMessage(e.message, 'ERROR') );

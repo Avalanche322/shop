@@ -52,6 +52,9 @@
 	}
 	&__cart{
 		max-width: 150px;
+		&:hover {
+			color: $orange-500;
+		}
 	}
 }
 .ratting-product{

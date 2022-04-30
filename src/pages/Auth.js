@@ -7,7 +7,7 @@ import { requestOTP, verifyOTP } from "../redux/actions";
 function Auth() {
 	const navigate = useNavigate()
 	const dispatch = useDispatch();
-	const handleClose = () => navigate('/');
+	const handleClose = () => navigate(-1);
 	const [phoneNumber, setPhoneNumber] = useState('+38');
 	const [otp, setOtp] = useState('');
 	const [otpForm, setOtpForm] = useState(false)
