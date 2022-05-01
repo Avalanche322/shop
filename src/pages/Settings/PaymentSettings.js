@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -38,6 +38,11 @@ const PaymentSettings = () => {
 	function handelCheckPayments(item) {
 		dispatch(updateUserPaymentsField(user, {active_card: item}))
 	}
+	useEffect(() => {
+		// title for page
+		document.title = `Оплата | FoodShop`;
+	// eslint-disable-next-line
+	}, [])
 	return (
 		<section className="w-100">
 			<div className="bg-white p-4">

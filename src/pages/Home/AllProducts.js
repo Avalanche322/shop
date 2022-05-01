@@ -97,6 +97,11 @@ const AllProducts = () => {
 			//setPrice(filtered.maxPrice)
 		}
 	}, [filtered])
+	useEffect(() => {
+		// title for page
+		document.title = `${products?.title} | FoodShop`;
+	// eslint-disable-next-line
+	}, [products])
 	return (
 		<section className="cetegory">
 			<Container fluid='md'>

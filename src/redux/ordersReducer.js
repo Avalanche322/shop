@@ -39,7 +39,7 @@ const ordersReducer = (state = initialState, action) => {
 	let updatedCurrentOrder = {};
 	switch (action.type) {
 		case FETCH_ORDER:
-			return {...state, orders: {content: action.payload.content, lengthOrders: action.payload.lengthOrders}}
+			return {...state, orders: {...action.payload}}
 		case SET_ORDER:
 			currentOrder = {...state.currentOrder, ...action.payload}
 			localStorage.setItem('currentOrder', JSON.stringify(currentOrder))

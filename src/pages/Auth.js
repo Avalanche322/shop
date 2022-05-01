@@ -1,6 +1,6 @@
 import { Modal, Button, Form, FloatingLabel } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { requestOTP, verifyOTP } from "../redux/actions";
 
@@ -23,7 +23,11 @@ function Auth() {
 		}
 		dispatch(requestOTP(phoneNumber));
 	}	
-
+	useEffect(() => {
+		// title for page
+		document.title = `Вхід | FoodShop`;
+	// eslint-disable-next-line
+	}, [])
 	return (
 		<Modal show onHide={handleClose}>
 			<Modal.Header closeButton>

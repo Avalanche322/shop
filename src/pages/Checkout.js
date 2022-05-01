@@ -133,6 +133,8 @@ const Checkout = () => {
 		if(!payments.cards.length) {
 			setTypePayment('card')
 		}
+		// title for page
+		document.title = `Замовлення | FoodShop`;
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[])
 	

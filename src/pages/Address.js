@@ -79,6 +79,10 @@ const Address = () => {
 	useEffect(() => {
 		setType(address?.type ?? 'shop')
 		setTitle(address?.type === 'delivery' ? 'Доставка' : 'Самовивіз')
+
+		// title for page
+		document.title = `Адреса | FoodShop`;
+	// eslint-disable-next-line
 	}, [])
 	useEffect(() => {
 		/* Set streets depends on town*/

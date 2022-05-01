@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from "react-router-dom";
 import CartPageItem from "../components/Cart/CartPageItem";
 import { removeOrder, setOrder } from "../redux/actions";
+import { useEffect } from "react";
 
 const Cart = () => {
 	const order = useSelector(state => state.orders.currentOrder)
@@ -17,6 +18,11 @@ const Cart = () => {
 	function handlerMessage(e){
 		dispatch(setOrder({message: e.target.value}))
 	}
+	useEffect(() => {
+		// title for page
+		document.title = `Кошик | FoodShop`;
+	// eslint-disable-next-line
+	}, [])
 	return (
 		<section className={`cart ${!order.products.length && 'mb-5'}`}>
 			<Container fluid='md' className="d-flex flex-lg-row flex-column gap-3">

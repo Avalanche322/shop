@@ -32,6 +32,10 @@ const Profile = () => {
 	}
 	useEffect(() => {
 		setEmail(user.email)
+
+		// title for page
+		document.title = `Профіль | FoodShop`;
+		// eslint-disable-next-line
 	}, [])
 	return (		
 		<section>

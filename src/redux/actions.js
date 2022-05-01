@@ -683,7 +683,60 @@ export function unsubscribe() {
 }
 
 /*orders*/
-export function fetchOrders(limitNum = 1, ordersContent, id){
+export function fetchOrders(limitNum = 6,id){
+	return async dispatch => {
+		try{
+			dispatch({type: HIDE_MESSAGE});
+			dispatch({type: SHOW_LOADER});
+			const lengthOrders = await getDocs(query(collection(db, "orders"),
+				orderBy('price'),
+				where('userUid', '==', id)
+			))
+			let ordersList = await getDocs(query(collection(db, "orders"),
+				orderBy('price'),
+				where('userUid', '==', id),
+				limit(limitNum)
+			));
+			let allIdProducts = []
+			let allIdProductsSubList = [];
+			let result = []
+			let order = {}
+			for (const orderDoc of ordersList.docs) {
+				order = await getDoc(doc(db, "orders", orderDoc.id));
+				allIdProducts.push(...order.data().products.map(x => x.id))
+				result.push(order.data())
+			}
+			for (let i = 0; i < allIdProducts.length; i+=10) {
+				allIdProductsSubList.push(allIdProducts.slice(i, i + 10))			
+			}
+			if(allIdProductsSubList.length) {
+				let productsRef = []
+				for (const sub of allIdProductsSubList) {
+					productsRef = query(collectionGroup(db, "contentsProducts"), 
+					where('id', 'in', sub))
+
+					const productsById = (await getDocs(productsRef)).docs.map(x => x.data());
+					for (const orderItem of result) {
+						orderItem.products = orderItem.products.map(orderItemProduct => {
+							let product = productsById.find(x => x.id === orderItemProduct.id);
+							return {...orderItemProduct, ...product}
+						})
+					}
+				}
+			}
+			dispatch({type: FETCH_ORDER, payload: {
+				content: result, 
+				lengthOrders: lengthOrders.docs.length}
+			});
+			dispatch({type: HIDE_LOADER});
+		} catch(e){
+			console.log(e);
+			dispatch(showMessage(e.message, 'ERROR') );
+			dispatch({type: HIDE_LOADER});
+		}
+	}
+}
+export function paginationOrders(limitNum = 1, ordersContent, id){
 	return async dispatch => {
 		try{
 			dispatch({type: HIDE_MESSAGE});
@@ -703,9 +756,10 @@ export function fetchOrders(limitNum = 1, ordersContent, id){
 				orderBy('price'),
 				where('userUid', '==', id),
 				startAt(lastDoc),
-				limit(1)
+				limit(6)
 			));
 			let allIdProducts = []
+			let allIdProductsSubList = [];
 			let result = []
 			let order = {}
 			for (const orderDoc of ordersList.docs) {
@@ -713,16 +767,22 @@ export function fetchOrders(limitNum = 1, ordersContent, id){
 				allIdProducts.push(...order.data().products.map(x => x.id))
 				result.push(order.data())
 			}
-			if(allIdProducts.length) {
-				const productsRef = query(collectionGroup(db, "contentsProducts"), 
-				where('id', 'in', allIdProducts))
+			for (let i = 0; i < allIdProducts.length; i+=10) {
+				allIdProductsSubList.push(allIdProducts.slice(i, i + 10))			
+			}
+			if(allIdProductsSubList.length) {
+				let productsRef = []
+				for (const sub of allIdProductsSubList) {
+					productsRef = query(collectionGroup(db, "contentsProducts"), 
+					where('id', 'in', sub))
 
-				const productsById = (await getDocs(productsRef)).docs.map(x => x.data());
-				for (const orderItem of result) {
-					orderItem.products = orderItem.products.map(orderItemProduct => {
-						let product = productsById.find(x => x.id === orderItemProduct.id);
-						return {...orderItemProduct, ...product}
-					})
+					const productsById = (await getDocs(productsRef)).docs.map(x => x.data());
+					for (const orderItem of result) {
+						orderItem.products = orderItem.products.map(orderItemProduct => {
+							let product = productsById.find(x => x.id === orderItemProduct.id);
+							return {...orderItemProduct, ...product}
+						})
+					}
 				}
 			}
 			dispatch({type: FETCH_ORDER, payload: {

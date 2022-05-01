@@ -24,10 +24,10 @@ const SearchItem = ({item, handlerSearchRemove}) => {
 		setProductInOrder(order.products.find(x => x.id === item.id)?.count ?? 0)
 		// eslint-disable-next-line array-callback-return
 		setProducts(allProducts.filter((p) => {
-				if (p.contents.filter(x => x.id === item.id).length) {
-					return p;
-				}
-			})[0])
+			if (p.contents.filter(x => x.id === item.id).length) {
+				return p;
+			}
+		})[0])
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 	

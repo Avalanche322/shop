@@ -5,11 +5,16 @@ import videoWebm from '../../video/prevue.webm';
 import ProductsList from '../../components/Home/ProductsList';
 import HomeBanner from '../../components/Home/HomeBanner';
 import { addProducts } from '../../redux/actions';
+import { useEffect } from 'react';
 
 function Home() {
 	const products = useSelector(state => state.products.products)
 	const dispatch = useDispatch()
-
+	useEffect(() => {
+		// title for page
+		document.title = 'FoodShop';
+	// eslint-disable-next-line
+	}, [])
 	return ( 
 		<div className="home">
 			<div className="full-screan position-relative vh-100 mb-5">

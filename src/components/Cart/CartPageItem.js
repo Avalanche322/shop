@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import placeholder  from '../../img/placeholder.png';
 import { storage } from '../../firebase';
 import { addToOrder, removeFromOrder } from '../../redux/actions';
 import AddToCart from '../AddToCart';
+import { Link } from 'react-router-dom';
 
 const CartPageItem = ({item}) => {
 	const [imgUrl, setImgUrl] = useState([])
 	const dispatch = useDispatch();
 	const [productInOrder, setProductInOrder] = useState(item.count)
+	const allProducts =  useSelector(state => state.products.products)
+	const [products, setProducts] = useState({})
 
 	function handlerAddToOrder(){
 		setProductInOrder(productInOrder + 1);
@@ -30,15 +33,20 @@ const CartPageItem = ({item}) => {
 			setImgUrl(fileUrl)
 		}
 		getImg()
+		setProducts(allProducts.filter((p) => {
+			if (p.contents.filter(x => x.id === item.id).length) {
+				return p;
+			}
+		})[0])
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 	return (
 		<>
 			<div key={item.id} className="cart__item item-cart d-flex flex-md-row flex-column align-items-center bg-white rounded-3 py-2 px-4 position-relative">
 				<div className='d-flex align-items-center'>
-					<div className="item-cart__img">
+					<Link  to={`/product/${item.id}`} state={{ product: item, products }} className="item-cart__img">
 						<img src={imgUrl ? imgUrl : placeholder} alt={item.name} />
-					</div>
+					</Link>
 					<div className='d-flex align-items-center flex-md-row flex-column justify-content-md-around'>
 						<span className="item-cart__name">{item.name}</span>
 						<span className='fw-light mt-md-0 mt-1 align-self-md-center align-self-start'>{item.weight}{item.type}</span>

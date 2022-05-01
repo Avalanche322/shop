@@ -32,6 +32,10 @@ const Product = () => {
 		setMark(Math.round(
 			product.marks.map(x => x.mark).reduce((a,b) => +a + +b, 0) / (!!product.marks.length ? product.marks.length : 1)
 		))
+
+		// title for page
+		document.title = `${product.name} | FoodShop`;
+	// eslint-disable-next-line
 	}, [])
 	useEffect(() => {
 		const checkTime = (t) => moment().set({'hour': t, 'second': '0', 'minute': '0'}).hour() > moment().hour()
