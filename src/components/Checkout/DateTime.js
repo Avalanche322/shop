@@ -7,7 +7,9 @@ const DateTime = ({
 	setTime,
 	typeAddress,
 	timeDelivery,
-	timeShop
+	timeShop,
+	day,
+	time
 }) => {
 	const loading = useSelector(state => state.app.loading)
 	return (
@@ -19,29 +21,41 @@ const DateTime = ({
 				<Form.Select
 					className='checkout__field'
 					disabled={loading}
-					value={moment().hour() < 17 ? moment().format('L') : moment().add(1, 'days').format('L')} 
+					value={day} 
 					onChange={(e) => setDay(e.target.value)}
 				>
 					{moment().hour() < 17 && 
-						<option value={moment().format('L')}>Сьогодні</option>
+						<option 
+							value={moment().format('L')}
+						>Сьогодні</option>
 					}
-					<option value={moment().add(1, 'days').format('L')}>Завтра</option>
-					<option value={moment().add(2, 'days').format('L')}>Після завтра</option>
+					<option 
+						value={moment().add(1, 'days').format('L')}
+					>Завтра</option>
+					<option 
+						value={moment().add(2, 'days').format('L')}
+					>Після завтра</option>
 				</Form.Select>
 				<Form.Select
 					className='checkout__field'
-					value={'11'}
+					value={time}
 					disabled={loading}
 					onChange={(e) => setTime(e.target.value)}
 					>
-					{typeAddress === 'delivery' && timeDelivery.map((time, i) => {
+					{typeAddress === 'delivery' && timeDelivery.map((timeItem, i) => {
 						return (
-							<option key={time.value ?? i} value={time.text}>{time.text}</option>
+							<option 
+								key={timeItem.value ?? i} 
+								value={timeItem?.text}
+							>{timeItem?.text}</option>
 						)
 					})}
-					{typeAddress === 'shop' && timeShop.map((time, i) => {
+					{typeAddress === 'shop' && timeShop.map((timeItem, i) => {
 						return (
-							<option key={time.value ?? i} value={time.text}>{time.text}</option>
+							<option 
+								key={timeItem.value ?? i} 
+								value={timeItem?.text}
+							>{timeItem?.text}</option>
 						)
 					})}
 				</Form.Select>

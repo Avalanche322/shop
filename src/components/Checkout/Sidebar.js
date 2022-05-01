@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
-const Sidebar = ({handlerMessage, typePayment}) => {
+const Sidebar = ({handlerMessage, typePayment, typeAddress, addressDelivery}) => {
 	const order = useSelector(state => state.orders.currentOrder)
 	const payments = useSelector(state => state.user.personl.payments);
 	const loading = useSelector(state => state.app.loading);
@@ -11,10 +11,17 @@ const Sidebar = ({handlerMessage, typePayment}) => {
 	useEffect(() => {
 		if(!payments.cards.length && typePayment === 'card-on-web') {
 			setDisableBtn(true)
+		} else if(typeAddress === 'delivery' &&
+			(!(addressDelivery.town)?.trim() 
+			|| !(addressDelivery.street)?.trim() 
+			|| !(addressDelivery.house)?.trim() 
+			|| !(addressDelivery.flat)?.trim())
+		){
+			setDisableBtn(true)
 		} else {
 			setDisableBtn(false)
 		}
-	}, [typePayment, payments])
+	}, [typePayment, payments, typeAddress, addressDelivery])
 	
 	return (
 		<aside className="bg-white h-100 p-4 rounded-3 checkout__sidebar">

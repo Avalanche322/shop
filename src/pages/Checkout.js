@@ -113,15 +113,25 @@ const Checkout = () => {
 
 	/*Set time */
 	useEffect(() => {
-		setTimeDelivery(timeDeliveryData)
-		setTimeShop(timeShopData)
-		if(address.type === 'delivery') {
-			setTime(timeDeliveryData[0].text)
+		if(moment().format('L') === day) {
+			setTimeDelivery(timeDeliveryData.filter(x => (moment().set({hour: x.value})).hour() > moment().hour()))
+			setTimeShop(timeShopData.filter(x => (moment().set({hour: x.value})).hour() > moment().hour()))
+			if(typeAddress === 'delivery') {
+				setTime(timeDeliveryData.filter(x => (moment().set({hour: x.value})).hour() > moment().hour())[0]?.text)
+			} else {
+				setTime(timeShopData.filter(x => (moment().set({hour: x.value})).hour() > moment().hour())[0]?.text)
+			}
 		} else {
-			setTime(timeShopData[0].text)
+			setTimeDelivery(timeDeliveryData)
+			setTimeShop(timeShopData)
+			if(typeAddress === 'delivery') {
+				setTime(timeDeliveryData[0]?.text)
+			} else {
+				setTime(timeShopData[0]?.text)
+			}
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	},[timeDeliveryData, timeShopData])
+	},[timeDeliveryData, timeShopData, day, typeAddress])
 
 	/*Set day*/
 	useEffect(() => {
@@ -172,6 +182,8 @@ const Checkout = () => {
 							/>
 							<DateTime
 								setDay={setDay}
+								day={day}
+								time={time}
 								setTime={setTime}
 								typeAddress={typeAddress}
 								timeDelivery={timeDelivery}
@@ -194,6 +206,8 @@ const Checkout = () => {
 						<Sidebar
 							handlerMessage={handlerMessage}
 							typePayment={typePayment}
+							typeAddress={typeAddress}
+							addressDelivery={addressDelivery}
 						/>
 					</div>
 				</Form>

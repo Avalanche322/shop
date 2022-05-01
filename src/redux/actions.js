@@ -659,15 +659,21 @@ export function unsubscribe() {
 			if(user){
 				dispatch({type: INIT_USER, payload: user});
 				localStorage.setItem('user', JSON.stringify(user));
-				//localStorage.setItem('currentOrder', JSON.stringify({ 
-				//	userUid: user.uid ?? '',
-				//	products: [],
-				//	price: 49,
-				//	message: '',
-				//	weight: 0
-				//}));
 			} else{
 				dispatch({type: INIT_USER, payload: null});
+				dispatch({type: SET_PERSONAL_USER, payload: {
+					address: {
+						delivery: [],
+						shop: [],
+						type: 'shop',
+						active_address: {}
+					},
+					contacts: {},
+					payments: {
+						active_card: {},
+						cards: []
+					}
+				}});
 				localStorage.removeItem('user');
 				localStorage.setItem('currentOrder', JSON.stringify({ 
 					userUid: '',

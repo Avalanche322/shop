@@ -19,7 +19,11 @@ function getPriceWeight(content){
 	let weight = 0;
 	for (const i of content.products) {
 		price += +(i.price * i.count)
-		weight += i.weight * i.count + (i.count * 0.02)
+		if(i.type === 'г') {
+			weight += i.weight * i.count / 1000 + (i.count * 0.02)
+		} else {
+			weight += i.weight * i.count + (i.count * 0.02)
+		}
 	}
 	price = +(price.toFixed(2)) + 49.00
 	weight = +(weight.toFixed(2))
